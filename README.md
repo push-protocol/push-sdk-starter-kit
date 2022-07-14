@@ -58,7 +58,7 @@ The App has following features-
 
 **We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned.**
 
-<span style="text-decoration:underline; font-weight: bold">Also the detailed SDK docs are hyperlinked in the feature's header itself</span>
+**Also the detailed SDK docs are hyperlinked in the feature's header itself**
 
 
 *If you have got the wallet connection logic down, you can start referring from section [3](#3-features-usage) onwards.*
