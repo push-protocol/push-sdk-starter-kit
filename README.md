@@ -25,6 +25,22 @@ yarn add styled-components
  yarn add ethers @web3-react/core @web3-react/injected-connector
 ```
 
+## Getting started
+```bash
+git clone https://github.com/ethereum-push-notification-service/epns-sdk-starter-kit.git
+```
+
+```bash
+cd epns-sdk-starter-kit
+```
+
+```bash
+yarn install
+```
+```bash
+yarn start
+```
+
 
 ## App walkthrough
 
