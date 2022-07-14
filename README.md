@@ -34,12 +34,17 @@ If your are trying to build out a separate dApp following this starter-kit examp
 yarn add styled-components
 ```
 
-2. Since its a dApp, the following are the **web3** dependencies needed (for wallet connection)
+2. Since its a dApp, the following are the **web3** dependencies that you can install for wallet connection
 ```bash
- yarn add ethers @web3-react/core @web3-react/injected-connector
+ yarn add ethers
 ```
 
-But no need to install these if you are using the `starter-kit` itself since we have already installed these for you.
+3. Needed only if you are using [web3-react](https://github.com/Uniswap/web3-react). You are free to use any other React based web3 solution.
+```bash
+yarn add @web3-react/core @web3-react/injected-connector
+```
+
+**But no need to install these if you are using the `starter-kit` itself since we have already installed these for you so that you can focus on how to use the EPNS-SDK packages**
 
 ## App walkthrough
 
