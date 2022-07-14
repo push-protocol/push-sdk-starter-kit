@@ -9,22 +9,6 @@ This starter-kit is meant to showcase developers on how to use the EPNS SDK pack
 ### CRA-Typescript
 This particular kit is built out using CRA, Typescript. The SDK packages should also work out for React using plain JS.
 
-## Dependencies
-If your are trying to build out a separate dApp following this starter-kit example, some of the following dependencies are needed for the SDK and any dApp to work.
-
-So these are already installed for you in the starter-kit.
-
-1. `@epnsproject/sdk-uiweb` has a `peerDependency` on `styled-components`
-
-```bash
-yarn add styled-components
-```
-
-2. Since its a dApp, the following are the **web3** dependencies needed
-```bash
- yarn add ethers @web3-react/core @web3-react/injected-connector
-```
-
 ## Getting started
 ```bash
 git clone https://github.com/ethereum-push-notification-service/epns-sdk-starter-kit.git
@@ -41,6 +25,21 @@ yarn install
 yarn start
 ```
 
+## Dependencies
+If your are trying to build out a separate dApp following this starter-kit example, some of the following dependencies are needed for the SDK and any dApp to work.
+
+1. `@epnsproject/sdk-uiweb` has a `peerDependency` on `styled-components`
+
+```bash
+yarn add styled-components
+```
+
+2. Since its a dApp, the following are the **web3** dependencies needed (for wallet connection)
+```bash
+ yarn add ethers @web3-react/core @web3-react/injected-connector
+```
+
+But no need to install these if you are using the `starter-kit` itself since we have already installed these for you.
 
 ## App walkthrough
 
