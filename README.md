@@ -1,46 +1,313 @@
-# Getting Started with Create React App
+# EPNS-SDK starter kit
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This starter-kit is meant to showcase developers on how to use the EPNS SDK packages - 
 
-## Available Scripts
+* [@epnsproject/sdk-restapi](https://www.npmjs.com/package/@epnsproject/sdk-restapi) Provides access to EPNS backend APIs.
+* [@epnsproject/sdk-uiweb](https://www.npmjs.com/package/@epnsproject/sdk-uiweb) Provides React based components to show Notifications, Spam, SubscribedModal etc for dApps.
+* [@epnsproject/sdk-uiembed](https://www.npmjs.com/package/@epnsproject/sdk-uiembed) Provides vanilla JS sidebar notifications for any  dApp.
 
-In the project directory, you can run:
+### CRA-Typescript
+This particular kit is built out using CRA, Typescript. The SDK packages should also work out for React using plain JS.
 
-### `yarn start`
+## Dependencies
+If your are trying to build out a separate dApp following this starter-kit example, some of the following dependencies are needed for the SDK and any dApp to work.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+So these are already installed for you in the starter-kit.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. `@epnsproject/sdk-uiweb` has a `peerDependency` on `styled-components`
 
-### `yarn test`
+```bash
+yarn add styled-components
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Since its a dApp, the following are the **web3** dependencies needed
+```bash
+ yarn add ethers @web3-react/core @web3-react/injected-connector
+```
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## App walkthrough
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The App has following features-
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Page    | Features    | SDK package used |
+|----------|---------|---------|
+| Notifications    | notifications, <br/>spams, <br/>subscribed modal  |  @epnsproject/sdk-uiweb, <br/>@epnsproject/sdk-restapi    |
+| Channels     | search a channel, <br/>get channel subscribers, <br/>is the logged-in user subscribed to the channel, <br/>opt in a channel, <br/>opt out a channel  | @epnsproject/sdk-restapi      |
+| Embed | sidebar notifications for the logged in user if subscribed on EPNS  |   @epnsproject/sdk-uiembed    |
 
-### `yarn eject`
+**We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned. Also the detailed SDK docs are hyperlinked in the feature's header itself**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+*If you have got the wallet connection logic down, you can start referring from section [3](#3-features-usage) onwards.*
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 1. Connecting to the Wallet
+Any dApp will require a wallet connection logic before it is usable. We have handled that for you in `App.tsx`. If you want to tinker around  with that, check the below component.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```typescript
+import ConnectButton from './components/connect';
+```
 
-## Learn More
+### 2. Wallet connection Props to be used throughout the dApp
+We basically derive the account, signer and some other wallet connection properties to use throughout the dApp with the SDK.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```typescript
+const { chainId, account, active, error, library  } = useWeb3React();
+```
+We store this data in the web3Context and make it available across the dApp for later use.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3. Features usage
+
+
+NOTIFICATIONS PAGE (`src/pages/notifications/index.tsx`)
+```typescript
+import * as EpnsAPI from "@epnsproject/sdk-restapi";
+import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/sdk-uiweb';
+```
+
+#### [Fetching Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-notifications)
+
+```typescript
+const response = await EpnsAPI.fetchNotifications({
+  user: account,
+  chainId
+});
+
+const parsedResults = EpnsAPI.parseApiResponse(response.results);
+```
+#### [Displaying Notifications]()
+
+```typescript
+// notifs === parsedResults
+{notifs.map((oneNotification, i) => {
+    const { 
+    cta,
+    title,
+    message,
+    app,
+    icon,
+    image,
+    url,
+    blockchain,
+    secret,
+    notification
+    } = oneNotification;
+
+    return (
+        <NotificationItem
+            key={`notif-${i}`}
+            notificationTitle={secret ? notification['title'] : title}
+            notificationBody={secret ? notification['body'] : message}
+            cta={cta}
+            app={app}
+            icon={icon}
+            image={image}
+            url={url}
+            theme={theme}
+            chainName={blockchain as chainNameType}
+        />
+    );
+})}
+```
+
+#### [Fetching Spams](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-spam-notifications)
+
+```typescript
+const response = await EpnsAPI.fetchSpamNotifications({
+    user: account,
+    chainId
+});
+
+const parsedResults = EpnsAPI.parseApiResponse(response.results);
+```
+
+```typescript
+// spams === parsedResults
+{spams ? (
+    <NotificationListContainer>
+        {spams.map((oneNotification, i) => {
+        const { 
+        cta,
+        title,
+        message,
+        app,
+        icon,
+        image,
+        url,
+        blockchain,
+        secret,
+        notification
+        } = oneNotification;
+
+        return (
+            <NotificationItem
+                key={`spam-${i}`}
+                notificationTitle={secret ? notification['title'] : title}
+                notificationBody={secret ? notification['body'] : message}
+                cta={cta}
+                app={app}
+                icon={icon}
+                image={image}
+                url={url}
+                theme={theme}
+                chainName={blockchain as chainNameType}
+                // optional parameters for rendering spambox
+                isSpam
+                subscribeFn={async () => console.log("yayy spam")}
+                isSubscribedFn={async () => false}
+    
+            />
+        );
+    })}
+```
+
+#### SubscribedModal
+
+```typescript
+    const [showSubscribe, setShowSubscribe] = useState(false);
+
+    const toggleSubscribedModal = () => {
+        setShowSubscribe((lastVal) => !lastVal);
+    };
+
+
+    // JSX
+    {showSubscribe ? <SubscribedModal onClose={toggleSubscribedModal}/> : null}
+```
+
+CHANNELS PAGE (`src/pages/channels/index.tsx`)
+
+```typescript
+import * as EpnsAPI from '@epnsproject/sdk-restapi';
+```
+#### [Fetch Channel Data](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channel-details)
+
+```typescript
+const response = await EpnsAPI.getChannelByAddress({
+    channel: channelAddr,
+    chainId
+});
+```
+
+*Note on `channelAlias`: If you are running the dApp on any network other than ETH_Mainnet, ETH_Kovan like Polygon, then you need to provide a `channelAlias` if that channel has a registered alias address on the same network (i.e. Polygon etc). The response from `getChannelByAddress` has a field called `alias_address` which has the value for the `channelAlias` if registered.*
+
+#### [Fetch Channel Subscribers](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channels-subscribers-details)
+
+```typescript
+const response = await EpnsAPI.getSubscribers({
+    channel: channelAddr,
+    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
+    chainId
+});
+```
+
+#### [Fetch Subscriber Status](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#check-if-user-is-subscribed-to-a-channel)
+
+```typescript
+const response = await EpnsAPI.isUserSubscribed({
+    channel: channelAddr,
+    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
+    user: account,
+    chainId
+});
+```
+
+#### [Opt-In to a channel](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#opt-in-to-a-channel) 
+
+```typescript
+ const _signer = library.getSigner(account); // from useWeb3()
+ //
+ //
+ //
+await EpnsAPI.optIn({
+    signer: _signer,
+    channelAddress: channelAddr,
+    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
+    userAddress: account,
+    chainId,
+    onSuccess: () => {
+    console.log('opt in success');
+        setSubscriberStatus(true);
+    },
+    onError: (e) => {
+        console.error('opt in error', e);
+    },
+})
+```
+
+#### [Opt-Out of a channel](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#opt-out-to-a-channel) 
+
+```typescript
+ const _signer = library.getSigner(account); // from useWeb3()
+ //
+ //
+ //
+  await EpnsAPI.optOut({
+    signer: _signer,
+    channelAddress: channelAddr,
+    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
+    userAddress: account,
+    chainId,
+    onSuccess: () => {
+    console.log('opt out success');
+        setSubscriberStatus(false);
+    },
+    onError: (e) => {
+        console.error('opt out error', e);
+    },
+})
+```
+
+
+EMBED PAGE (`src/pages/embed/index.tsx`)
+#### [Embed - Sidebaar notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/uiembed/README.md#uiembed) 
+
+
+```typescript
+import { useEffect, useContext } from 'react';
+import { EmbedSDK } from "@epnsproject/sdk-uiembed";
+import Web3Context from '../../context/web3Context';
+
+const EmbedPage = () => {
+    const { account, chainId } = useContext<any>(Web3Context);
+
+    useEffect(() => {
+        if (account) { // 'your connected wallet address'
+          EmbedSDK.init({
+            chainId,
+            headerText: 'Hello Hacker Dashboard', // optional
+            targetID: 'sdk-trigger-id', // mandatory
+            appName: 'hackerApp', // mandatory
+            user: account, // mandatory
+            viewOptions: {
+                type: 'sidebar', // optional [default: 'sidebar', 'modal']
+                showUnreadIndicator: true, // optional
+                unreadIndicatorColor: '#cc1919',
+                unreadIndicatorPosition: 'top-right',
+            },
+            theme: 'light',
+            onOpen: () => {
+              console.log('-> client dApp onOpen callback');
+            },
+            onClose: () => {
+              console.log('-> client dApp onClose callback');
+            }
+          });
+        }
+    
+        return () => {
+          EmbedSDK.cleanup();
+        };
+      }, [account, chainId]);
+
+
+    return (
+        <div>
+          <h2>Embed Test page</h2>
+
+
+          <button id="sdk-trigger-id">trigger button</button>
+        </div>
+    );
+}
+```
