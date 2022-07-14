@@ -56,7 +56,9 @@ The App has following features-
 | Channels     | search a channel, <br/>get channel subscribers, <br/>is the logged-in user subscribed to the channel, <br/>opt in a channel, <br/>opt out a channel  | @epnsproject/sdk-restapi      |
 | Embed | sidebar notifications for the logged in user if subscribed on EPNS  |   @epnsproject/sdk-uiembed    |
 
-**We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned. Also the detailed SDK docs are hyperlinked in the feature's header itself**
+**We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned.**
+
+<span style="text-decoration:underline; font-weight: bold">Also the detailed SDK docs are hyperlinked in the feature's header itself</span>
 
 
 *If you have got the wallet connection logic down, you can start referring from section [3](#3-features-usage) onwards.*
