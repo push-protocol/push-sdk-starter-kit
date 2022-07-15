@@ -25,3 +25,22 @@ export const CodeFormatter = styled.pre`
   padding: 15px;
   border-radius: 7px;
 `;
+
+export const SectionButton = styled.button`
+  font-family: "Source Sans Pro",Arial,sans-serif;
+  font-size: 16px;
+  display: flex;
+  margin-right: 15px;
+  padding: 15px 20px;
+  background: #674C9F;
+  border: 0;
+  border-radius: 7px;
+  box-shadow: rgb(0 0 0 / 52%) 0px 0px 5px;
+  color: #fff;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+    background: rgb(226, 8, 128);
+  }
+`;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Section, SectionItem, CodeFormatter } from '../../components/styled';
+import { Section, SectionItem, CodeFormatter, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader';
 import Web3Context from '../../context/web3Context';
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
@@ -158,8 +158,7 @@ const ChannelsPage = () => {
         <SectionItem>
           <div>
             <p>
-              <b>Channel Data: </b>
-              <button onClick={testGetChannel}>get channel data</button>
+              <SectionButton onClick={testGetChannel}>get channel data</SectionButton>
             </p>
             {channelData ? (
               <CodeFormatter>
@@ -168,8 +167,7 @@ const ChannelsPage = () => {
             ) : null}
 
             <p>
-              <b>Subscribers Data: </b>
-              <button onClick={testGetSubscribers}>get subscribers</button>
+              <SectionButton onClick={testGetSubscribers}>get subscribers</SectionButton>
             </p>
             {subscriberData ? (
               <CodeFormatter>
@@ -178,8 +176,7 @@ const ChannelsPage = () => {
             ) : null}
 
             <p>
-              <b>Is logged in user subscribed: </b>
-              <button onClick={testSubscriberStatus}>check</button>
+              <SectionButton onClick={testSubscriberStatus}>check if logged-in user is subscribed</SectionButton>
             </p>
             {typeof subscriberStatus === 'boolean' ? (
               <>
@@ -187,7 +184,7 @@ const ChannelsPage = () => {
                   {JSON.stringify(subscriberStatus, null, 4)}
                 </CodeFormatter>
 
-                <button onClick={testOptFunctionality}>{subscriberStatus ? 'OPT OUT' : 'OPT IN'}</button>
+                <SectionButton onClick={testOptFunctionality}>{subscriberStatus ? 'OPT OUT' : 'OPT IN'}</SectionButton>
               </>
             ) : null}
           </div>

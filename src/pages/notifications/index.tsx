@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext, useCallback } from 'react';
 import styled from 'styled-components';
-import { Section, SectionItem } from '../../components/styled';
+import { Section, SectionItem, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader'
 import { DarkIcon, LightIcon } from '../../components/icons';
 import Web3Context from '../../context/web3Context';
@@ -19,14 +19,17 @@ const NotificationListContainer = styled.div`
   }
 `
 
-const NavButton = styled.div`
+const TabButtons = styled.div`
   margin: 20px 0;
-  display: flexbox;
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
+`;
 
-  & button {
-    margin-right: 15px;
-  }
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ThemeSelector = styled.div`
@@ -105,19 +108,22 @@ const NotificationsTest = () => {
 
   return (
       <div>
-        <h2>Notifications Test page</h2>
+        <Header>
+          <h2>Notifications Test page</h2>
+          
+          <ThemeSelector>
+            {theme === 'dark' ? <DarkIcon title="Dark" onClick={toggleTheme}/> : <LightIcon title="Light" onClick={toggleTheme}/>}
+          </ThemeSelector>
+        </Header>
+
         
-        <ThemeSelector>
-          {theme === 'dark' ? <DarkIcon title="Dark" onClick={toggleTheme}/> : <LightIcon title="Light" onClick={toggleTheme}/>}
-        </ThemeSelector>
-        
-        <hr />
-        <NavButton>
-          <button onClick={() => { setViewType('notif') }}>Notifications</button>
-          <button onClick={() => { setViewType('spam') }}>Spam</button>
-          <button onClick={toggleSubscribedModal}>show subscribed modal</button>
-        </NavButton>
-        <hr />
+  
+        <TabButtons>
+          <SectionButton onClick={() => { setViewType('notif') }}>Notifications</SectionButton>
+          <SectionButton onClick={() => { setViewType('spam') }}>Spam</SectionButton>
+          <SectionButton onClick={toggleSubscribedModal}>show subscribed modal</SectionButton>
+        </TabButtons>
+  
 
         <Loader show={isLoading} />
 
