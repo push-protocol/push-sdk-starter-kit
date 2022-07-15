@@ -97,7 +97,7 @@ const response = await EpnsAPI.fetchNotifications({
 
 const parsedResults = EpnsAPI.parseApiResponse(response.results);
 ```
-#### [Displaying Notifications]()
+#### [Displaying Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/uiweb#notification-item-component)
 
 ```typescript
 // notifs === parsedResults
@@ -142,6 +142,7 @@ const response = await EpnsAPI.fetchSpamNotifications({
 
 const parsedResults = EpnsAPI.parseApiResponse(response.results);
 ```
+#### [Displaying Spams](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/uiweb#notification-item-component)
 
 ```typescript
 // spams === parsedResults
