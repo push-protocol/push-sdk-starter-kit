@@ -18,6 +18,7 @@ export const Section = styled.section`
 export const SectionItem = styled.div`
   display: flex;
   gap: 15px;
+  align-items: center;
 `;
 
 export const CodeFormatter = styled.pre`

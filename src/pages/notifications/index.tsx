@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Section, SectionItem, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader'
 import { DarkIcon, LightIcon } from '../../components/icons';
-import Web3Context from '../../context/web3Context';
+import Web3Context, { DevContext } from '../../context/web3Context';
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
 import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/sdk-uiweb';
 
@@ -40,6 +40,7 @@ const ThemeSelector = styled.div`
 
 const NotificationsTest = () => {
   const { account, chainId } = useContext<any>(Web3Context);
+  const { isDevENV } = useContext<any>(DevContext);
   const [isLoading, setLoading] = useState(false);
   const [notifs, setNotifs] = useState<EpnsAPI.ParsedResponseType[]>();
   const [spams, setSpams] = useState<EpnsAPI.ParsedResponseType[]>();
@@ -48,42 +49,43 @@ const NotificationsTest = () => {
   const [showSubscribe, setShowSubscribe] = useState(false);
 
 
+  console.log({ isDevENV });
+
   const loadNotifications = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await EpnsAPI.fetchNotifications({
+      const feeds = await EpnsAPI.user.getFeeds({
         user: account,
-        chainId
+        // user: '0xD8634C39BBFd4033c0d3289C4515275102423681',
+        chainId,
+        dev: isDevENV
       });
-
-      const parsedResults = EpnsAPI.parseApiResponse(response.results);
-
-      setNotifs(parsedResults);
+      setNotifs(feeds);
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  }, [account, chainId]);
+  }, [account, chainId, isDevENV]);
 
   const loadSpam = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await EpnsAPI.fetchSpamNotifications({
+      const spams = await EpnsAPI.user.getFeeds({
         user: account,
-        chainId
+        chainId,
+        spam: true,
+        dev: isDevENV
       });
 
-      const parsedResults = EpnsAPI.parseApiResponse(response.results);
-
-      setSpams(parsedResults);
+      setSpams(spams);
   
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  }, [account, chainId]);
+  }, [account, chainId, isDevENV]);
 
   const toggleTheme = () => {
     setTheme(lastTheme => {

@@ -53,7 +53,7 @@ The App has following features-
 | Page    | Features    | SDK package used |
 |----------|---------|---------|
 | Notifications    | notifications, <br/>spams, <br/>subscribed modal  |  @epnsproject/sdk-uiweb, <br/>@epnsproject/sdk-restapi    |
-| Channels     | search a channel, <br/>get channel subscribers, <br/>is the logged-in user subscribed to the channel, <br/>opt in a channel, <br/>opt out a channel  | @epnsproject/sdk-restapi      |
+| Channels     | get channel details for a specific channel, <br/>search for channel(s), <br/>get channel subscribers, <br/>is the logged-in user subscribed to the channel, <br/>opt in a channel, <br/>opt out a channel  | @epnsproject/sdk-restapi      |
 | Embed | sidebar notifications for the logged in user if subscribed on EPNS  |   @epnsproject/sdk-uiembed    |
 
 **We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned.**
@@ -87,21 +87,19 @@ import * as EpnsAPI from "@epnsproject/sdk-restapi";
 import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/sdk-uiweb';
 ```
 
-#### [Fetching Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-notifications)
+#### [Fetching Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-user-notifications)
 
 ```typescript
-const response = await EpnsAPI.fetchNotifications({
+const notifications = await EpnsAPI.user.getFeeds({
   user: account,
   chainId
 });
-
-const parsedResults = EpnsAPI.parseApiResponse(response.results);
 ```
+
 #### [Displaying Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/uiweb#notification-item-component)
 
 ```typescript
-// notifs === parsedResults
-{notifs.map((oneNotification, i) => {
+{notifications.map((oneNotification, i) => {
     const { 
     cta,
     title,
@@ -132,15 +130,15 @@ const parsedResults = EpnsAPI.parseApiResponse(response.results);
 })}
 ```
 
-#### [Fetching Spams](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-spam-notifications)
+#### [Fetching Spams](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-user-spam-notifications)
 
 ```typescript
-const response = await EpnsAPI.fetchSpamNotifications({
-    user: account,
-    chainId
+const spams = await EpnsAPI.user.getFeeds({
+  user: account,
+  chainId,
+  spam: true
 });
 
-const parsedResults = EpnsAPI.parseApiResponse(response.results);
 ```
 #### [Displaying Spams](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/uiweb#notification-item-component)
 
@@ -184,6 +182,38 @@ const parsedResults = EpnsAPI.parseApiResponse(response.results);
     })}
 ```
 
+#### Parsing raw [Feeds API data](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-user-notifications) using [utils](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#parsing-notifications) method `parseApiResponse`
+Utils method to parse raw EPNS Feeds API response into a pre-defined shape as below.
+```typescript
+// fetch some raw feeds data
+const apiResponse = await EpnsAPI.user.getFeeds({
+  user: '0xabc123', // user address
+  chainId: 1, // ETH network chain ID
+  raw: true
+});
+// parse it to get a specific shape of object.
+const parsedResults = EpnsAPI.utils.parseApiResponse(apiResponse);
+
+const [oneNotification] = parsedResults;
+
+// Now this object can be directly used by for e.g. "@epnsproject/sdk-uiweb"  NotificationItem component as props.
+
+const {
+  cta,
+  title,
+  message,
+  app,
+  icon,
+  image,
+  url,
+  blockchain,
+  secret,
+  notification
+} = oneNotification;
+
+```
+*We get the above `keys` after the parsing of the API repsonse.*
+
 #### SubscribedModal
 
 ```typescript
@@ -206,32 +236,30 @@ import * as EpnsAPI from '@epnsproject/sdk-restapi';
 #### [Fetch Channel Data](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channel-details)
 
 ```typescript
-const response = await EpnsAPI.getChannelByAddress({
+const response = await EpnsAPI.channels.getChannel({
     channel: channelAddr,
     chainId
 });
 ```
 
-*Note on `channelAlias`: If you are running the dApp on any network other than ETH_Mainnet, ETH_Kovan like Polygon, then you need to provide a `channelAlias` if that channel has a registered alias address on the same network (i.e. Polygon etc). The response from `getChannelByAddress` has a field called `alias_address` which has the value for the `channelAlias` if registered.*
+*Note on `channelAlias`: If you are running the dApp on any network other than ETH_Mainnet, ETH_Kovan like Polygon, then you need to provide a `channelAlias` if that channel has a registered alias address on the same network (i.e. Polygon etc). The response from `getChannel` has a field called `alias_address` which has the value for the `channelAlias` if registered.*
 
-#### [Fetch Channel Subscribers](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channels-subscribers-details)
+#### [DEPRECATED-Fetch Channel Subscribers](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channels-subscribers-details)
 
 ```typescript
-const response = await EpnsAPI.getSubscribers({
+const response = await EpnsAPI.channels._getSubscribers({
     channel: channelAddr,
     channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
     chainId
 });
 ```
 
-#### [Fetch Subscriber Status](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#check-if-user-is-subscribed-to-a-channel)
+#### [Fetch User subscriptions](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#check-if-user-is-subscribed-to-a-channel)
 
 ```typescript
-const response = await EpnsAPI.isUserSubscribed({
-    channel: channelAddr,
-    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
-    user: account,
-    chainId
+const subscriptions = await EpnsAPI.user.getSubscriptions({
+  user: account, // user address
+  chainId // ETH network chain ID
 });
 ```
 
@@ -242,7 +270,7 @@ const response = await EpnsAPI.isUserSubscribed({
  //
  //
  //
-await EpnsAPI.optIn({
+await EpnsAPI.channels.subscribe({
     signer: _signer,
     channelAddress: channelAddr,
     channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
@@ -265,7 +293,7 @@ await EpnsAPI.optIn({
  //
  //
  //
-  await EpnsAPI.optOut({
+  await EpnsAPI.channels.unsubscribe({
     signer: _signer,
     channelAddress: channelAddr,
     channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,

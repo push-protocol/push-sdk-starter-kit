@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Section, SectionItem, CodeFormatter, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader';
-import Web3Context from '../../context/web3Context';
+import Web3Context, { DevContext } from '../../context/web3Context';
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
 
 const ChannelsPage = () => {
   const { library, account, chainId } = useContext<any>(Web3Context);
-  
+  const { isDevENV } = useContext<any>(DevContext);
   const [channelAddr, setChannelAddr] = useState<string>('');
+  const [channelName, setChannelName] = useState<string>('');
   const [isLoading, setLoading] = useState(false);
   const [channelData, setChannelData] = useState();
+  const [channelListData, setChannelListData] = useState();
   const [subscriberData, setSubscriberData] = useState();
   const [subscriberStatus, setSubscriberStatus] = useState<boolean>();  
 
@@ -19,35 +21,57 @@ const ChannelsPage = () => {
     );
   };
 
-  const testGetChannel = async () => {
+  const updateChannelName = (e: React.SyntheticEvent<HTMLElement>) => {
+    setChannelName(
+      (e.target as HTMLInputElement).value
+    );
+  };
+
+  const testGetChannelByAddress = async () => {
     try {
       setLoading(true);
-      const response = await EpnsAPI.getChannelByAddress({
+
+      // object for channel data
+      const response = await EpnsAPI.channels.getChannel({
         channel: channelAddr,
-        chainId
+        chainId,
+        dev: isDevENV
       });
-  
+      
       setChannelData(response);
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
+  };
 
+  const testGetChannelByName = async () => {
+    try {
+      setLoading(true);
+
+      // Array for channels data
+      const response = await EpnsAPI.channels.search({
+        query: channelName,
+        chainId,
+        dev: isDevENV
+      });
+      setChannelListData(response);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const testGetSubscribers = async () => {
-    if (!channelData) {
-      alert('First fetch channel data!');
-      return;
-    }
-
     try {
       setLoading(true);
-      const response = await EpnsAPI.getSubscribers({
+      const response = await EpnsAPI.channels._getSubscribers({
         channel: channelAddr,
         channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
-        chainId
+        chainId,
+        dev: isDevENV
       });
   
       setSubscriberData(response);
@@ -59,22 +83,17 @@ const ChannelsPage = () => {
   };
 
   const testSubscriberStatus = async () => {
-    if (!channelData) {
-      alert('First fetch channel data!');
-      return;
-    }
-
     try {
       setLoading(true);
-      
-      const response = await EpnsAPI.isUserSubscribed({
-        channel: channelAddr,
-        channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
+      const subscriptions = await EpnsAPI.user.getSubscriptions({
         user: account,
-        chainId
+        chainId,
+        dev: isDevENV
       });
+
+      const status = subscriptions.map((sub: any) => sub.channel).includes(channelAddr);
   
-      setSubscriberStatus(response);
+      setSubscriberStatus(status);
     } catch(e) {
       console.error(e)
     } finally {
@@ -91,7 +110,7 @@ const ChannelsPage = () => {
       setLoading(true);
 
       if (subscriberStatus) {
-        await EpnsAPI.optOut({
+        await EpnsAPI.channels.unsubscribe({
           signer: _signer,
           channelAddress: channelAddr,
           channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
@@ -104,9 +123,10 @@ const ChannelsPage = () => {
           onError: (e) => {
             console.error('opt out error', e);
           },
+          dev: isDevENV
         })
       } else {
-        await EpnsAPI.optIn({
+        await EpnsAPI.channels.subscribe({
           signer: _signer,
           channelAddress: channelAddr,
           channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
@@ -119,6 +139,7 @@ const ChannelsPage = () => {
           onError: (e) => {
             console.error('opt in error', e);
           },
+          dev: isDevENV
         })
       }
 
@@ -130,15 +151,15 @@ const ChannelsPage = () => {
   };
 
   useEffect(() => {
-    if (channelData && channelData['addr']) {
-      setChannelAddr(channelData['addr'])
+    if (channelData && channelData['channel']) {
+      setChannelAddr(channelData['channel'])
     }
   }, [channelData])
 
   useEffect(() => {
     // update the other data sections as well on opt in/out completion
     if (typeof subscriberStatus === 'boolean') {
-      testGetChannel();
+      testGetChannelByAddress();
       testGetSubscribers();
     }
   }, [subscriberStatus]);
@@ -151,33 +172,32 @@ const ChannelsPage = () => {
 
       <Section>
         <SectionItem>
-          <label>Channel Address/Name</label>
-          <input type="text" onChange={updateChannelAddress} value={channelAddr} style={{ width: 400 }} />
+          <label>Channel Address</label>
+          <input type="text" onChange={updateChannelAddress} value={channelAddr} style={{ width: 400, height: 30 }} />
+          <SectionButton onClick={testGetChannelByAddress}>get channel data</SectionButton>
         </SectionItem>
-       
+ 
         <SectionItem>
           <div>
-            <p>
-              <SectionButton onClick={testGetChannel}>get channel data</SectionButton>
-            </p>
             {channelData ? (
               <CodeFormatter>
                 {JSON.stringify(channelData, null, 4)}
               </CodeFormatter>
             ) : null}
 
-            <p>
+            <SectionItem style={{ marginTop: 20 }}>
               <SectionButton onClick={testGetSubscribers}>get subscribers</SectionButton>
-            </p>
+            </SectionItem>
+            
             {subscriberData ? (
               <CodeFormatter>
                 {JSON.stringify(subscriberData, null, 4)}
               </CodeFormatter>
             ) : null}
 
-            <p>
+            <SectionItem style={{ marginTop: 20 }}>
               <SectionButton onClick={testSubscriberStatus}>check if logged-in user is subscribed</SectionButton>
-            </p>
+            </SectionItem>
             {typeof subscriberStatus === 'boolean' ? (
               <>
                 <CodeFormatter>
@@ -189,6 +209,20 @@ const ChannelsPage = () => {
             ) : null}
           </div>
         </SectionItem>
+
+        <div style={{ marginTop: 50, paddingTop: 30, borderTop: '1px solid' }}>
+            <SectionItem>
+              <label>Channel Name</label>
+              <input type="text" onChange={updateChannelName} value={channelName} style={{ width: 400, height: 30 }} />
+              <SectionButton onClick={testGetChannelByName}>get channel data</SectionButton>
+            </SectionItem>
+
+            {channelListData ? (
+              <CodeFormatter>
+                {JSON.stringify(channelListData, null, 4)}
+              </CodeFormatter>
+            ) : null}
+        </div>
       </Section>
     </div>
   );
