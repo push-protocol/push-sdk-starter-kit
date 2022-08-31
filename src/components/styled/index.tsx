@@ -19,6 +19,10 @@ export const SectionItem = styled.div`
   display: flex;
   gap: 15px;
   align-items: center;
+
+  & label.consoleLabel {
+    color: green;
+  }
 `;
 
 export const CodeFormatter = styled.pre`

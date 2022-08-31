@@ -10,6 +10,7 @@ import Dropdown from './components/dropdown';
 import NotificationsPage from './pages/notifications';
 import ChannelsPage from './pages/channels';
 import EmbedPage from './pages/embed';
+import PayloadsPage from './pages/payloads';
 
 interface Web3ReactState {
   chainId?: number;
@@ -145,6 +146,7 @@ export function App() {
                 <NavMenu>
                   <Link to="/notifications" className='nav-button'>NOTIFICATIONS</Link>
                   <Link to="/channels" className='nav-button'>CHANNELS</Link>
+                  <Link to="/payloads" className='nav-button'>PAYLOADS</Link>
                   <Link to="/embed" className='nav-button'>EMBDED</Link>
                 </NavMenu>
               }
@@ -158,6 +160,11 @@ export function App() {
             <Route
               path="/channels"
               element={<ChannelsPage />}
+            />
+
+            <Route
+              path="/payloads"
+              element={<PayloadsPage />}
             />
 
             <Route
