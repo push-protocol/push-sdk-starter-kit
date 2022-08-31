@@ -54,6 +54,7 @@ The App has following features-
 |----------|---------|---------|
 | Notifications    | notifications, <br/>spams, <br/>subscribed modal  |  @epnsproject/sdk-uiweb, <br/>@epnsproject/sdk-restapi    |
 | Channels     | get channel details for a specific channel, <br/>search for channel(s), <br/>get channel subscribers, <br/>is the logged-in user subscribed to the channel, <br/>opt in a channel, <br/>opt out a channel  | @epnsproject/sdk-restapi      |
+| Payloads     | send notification for different use cases  | @epnsproject/sdk-restapi      |
 | Embed | sidebar notifications for the logged in user if subscribed on EPNS  |   @epnsproject/sdk-uiembed    |
 
 **We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned.**
@@ -254,8 +255,18 @@ import * as EpnsAPI from '@epnsproject/sdk-restapi';
 #### [Fetch Channel Data](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channel-details)
 
 ```typescript
-const subscribers = await EpnsAPI.channels.getChannel({
+const channelData = await EpnsAPI.channels.getChannel({
   channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // channel address in CAIP
+  env: 'staging'
+});
+```
+
+#### [Searching for channel(s)](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#searching-for-channels)
+```typescript
+const channelsData = await EpnsAPI.channels.search({
+  query: 'epns', // a search query
+  page: 1, // page index
+  limit: 20, // no of items per page
   env: 'staging'
 });
 ```
@@ -319,6 +330,302 @@ await EpnsAPI.channels.unsubscribe({
   env: 'staging'
 })
 ```
+
+#### PAYLOADS PAGE
+
+[Send Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#sending-notification)
+
+##### **direct payload for single recipient(target)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 3, // target
+  identityType: 2, // direct payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  recipients: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // recipient address
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **direct payload for group of recipients(subset)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 4, // subset
+  identityType: 2, // direct payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  recipients: ['eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', 'eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1'], // recipients addresses
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **direct payload for all recipients(broadcast)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 1, // broadcast
+  identityType: 2, // direct payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **IPFS payload for single recipient(target)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 3, // target
+  identityType: 1, // ipfs payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  ipfsHash: 'bafkreicuttr5gpbyzyn6cyapxctlr7dk2g6fnydqxy6lps424mcjcn73we', // IPFS hash of the payload
+  recipients: 'eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', // recipient address
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **IPFS payload for group of recipients(subset)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 4, // subset
+  identityType: 1, // ipfs payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  ipfsHash: 'bafkreicuttr5gpbyzyn6cyapxctlr7dk2g6fnydqxy6lps424mcjcn73we', // IPFS hash of the payload
+  recipients: ['eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', 'eip155:42:0x52f856A160733A860ae7DC98DC71061bE33A28b3'], // recipients addresses
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **IPFS payload for all recipients(broadcast)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 1, // broadcast
+  identityType: 1, // direct payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  ipfsHash: 'bafkreicuttr5gpbyzyn6cyapxctlr7dk2g6fnydqxy6lps424mcjcn73we', // IPFS hash of the payload
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **minimal payload for single recipient(target)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 3, // target
+  identityType: 0, // Minimal payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  recipients: 'eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', // recipient address
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **minimal payload for a group of recipient(subset)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 4, // subset
+  identityType: 0, // Minimal payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  recipients: ['eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', 'eip155:42:0x52f856A160733A860ae7DC98DC71061bE33A28b3'], // recipients address
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **minimal payload for all recipients(broadcast)**
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 1, // broadcast
+  identityType: 0, // Minimal payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **graph payload for single recipient(target)**
+***Make sure the channel has the graph id you are providing!!***
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 3, // target
+  identityType: 3, // Subgraph payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  graph: {
+    id: '_your_graph_id',
+    counter: 3
+  },
+  recipients: 'eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', // recipient address
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **graph payload for group of recipients(subset)**
+***Make sure the channel has the graph id you are providing!!***
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 4, // subset
+  identityType: 3, // graph payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  graph: {
+    id: '_your_graph_id',
+    counter: 3
+  },
+  recipients: ['eip155:42:0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', 'eip155:42:0x52f856A160733A860ae7DC98DC71061bE33A28b3'], // recipients addresses
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+##### **graph payload for all recipients(broadcast)**
+***Make sure the channel has the graph id you are providing!!***
+```typescript
+// apiResponse?.status === 204, if sent successfully!
+const apiResponse = await EpnsAPI.payloads.sendNotification({
+  signer,
+  type: 1, // broadcast
+  identityType: 3, // graph payload
+  notification: {
+    title: `[SDK-TEST] notification TITLE:`,
+    body: `[sdk-test] notification BODY`
+  },
+  payload: {
+    title: `[sdk-test] payload title`,
+    body: `sample msg body`,
+    cta: '',
+    img: ''
+  },
+  graph: {
+    id: '_your_graph_id',
+    counter: 3
+  },
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // your channel address
+  env: 'staging'
+});
+```
+
+
 
 
 EMBED PAGE (`src/pages/embed/index.tsx`)
