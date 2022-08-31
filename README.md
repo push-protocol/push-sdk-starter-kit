@@ -331,9 +331,9 @@ await EpnsAPI.channels.unsubscribe({
 })
 ```
 
-#### PAYLOADS PAGE
+PAYLOADS PAGE (`src/pages/payloads/index.tsx`)
 
-[Send Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#sending-notification)
+#### [Send Notifications](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#sending-notification)
 
 ##### **direct payload for single recipient(target)**
 ```typescript
