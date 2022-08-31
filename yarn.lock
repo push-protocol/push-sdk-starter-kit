@@ -1191,13 +1191,14 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
-"@epnsproject/sdk-restapi@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-restapi/-/sdk-restapi-0.1.4.tgz#7b261adb7a60486d596bd8ee3e159e91032ce7b2"
-  integrity sha512-wN4veLf8/quhf/gk94O99Z1e4rwI/+5xtVOdhNYiuH1wMFWGHYntwONXPfYKbVzFej+CVNwm2h8CN7SvO296Iw==
+"@epnsproject/sdk-restapi@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-restapi/-/sdk-restapi-0.1.8.tgz#8323f3ad3bc6b11aa55de9f6c4d0a58dd3dfce14"
+  integrity sha512-uUwt1FOlepK147GMHr8co6aipil/9uD1dDpKguxI8v2Pudo6G/xTvPyeDKOHsoq7gKAYN8dSm8WzYya9mmlpPg==
   dependencies:
     axios "^0.27.2"
     tslib "^2.3.0"
+    uuid "^8.3.2"
 
 "@epnsproject/sdk-uiembed@^0.0.3":
   version "0.0.3"
@@ -1206,10 +1207,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@epnsproject/sdk-uiweb@^0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-uiweb/-/sdk-uiweb-0.1.9.tgz#c35916457a8abbe05c6558a5e32a210502da5934"
-  integrity sha512-xqGKS7CI5b5PDDYD6dzwZxKcUauNxSDI9tmsKyvHkiD3G3QPa3S62dRFVH8hSqLrrQASBjFG9Icp8AUakFGzpA==
+"@epnsproject/sdk-uiweb@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-uiweb/-/sdk-uiweb-0.1.10.tgz#96468839938605aac5b1cbec0fc367d31364669e"
+  integrity sha512-hbhwsOJ/0G+aZFuUDWZYothh2nulsWIJZmCub0/DHn2HtzDgc9fuuVYH7WgDwxSfOBfJRRz/640DzDEQQu0AUA==
   dependencies:
     date-fns "^2.28.0"
     html-react-parser "^1.4.13"

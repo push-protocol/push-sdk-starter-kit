@@ -91,8 +91,8 @@ import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/s
 
 ```typescript
 const notifications = await EpnsAPI.user.getFeeds({
-  user: account,
-  chainId
+  user: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // user address in CAIP
+  env: 'staging'
 });
 ```
 
@@ -114,18 +114,18 @@ const notifications = await EpnsAPI.user.getFeeds({
     } = oneNotification;
 
     return (
-        <NotificationItem
-            key={`notif-${i}`}
-            notificationTitle={secret ? notification['title'] : title}
-            notificationBody={secret ? notification['body'] : message}
-            cta={cta}
-            app={app}
-            icon={icon}
-            image={image}
-            url={url}
-            theme={theme}
-            chainName={blockchain as chainNameType}
-        />
+      <NotificationItem
+        key={`notif-${i}`}
+        notificationTitle={secret ? notification['title'] : title}
+        notificationBody={secret ? notification['body'] : message}
+        cta={cta}
+        app={app}
+        icon={icon}
+        image={image}
+        url={url}
+        theme={theme}
+        chainName={blockchain as chainNameType}
+      />
     );
 })}
 ```
@@ -134,12 +134,12 @@ const notifications = await EpnsAPI.user.getFeeds({
 
 ```typescript
 const spams = await EpnsAPI.user.getFeeds({
-  user: account,
-  chainId,
-  spam: true
+  user: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // user address in CAIP
+  spam: true,
+  env: 'staging'
 });
-
 ```
+
 #### [Displaying Spams](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/uiweb#notification-item-component)
 
 ```typescript
@@ -174,22 +174,40 @@ const spams = await EpnsAPI.user.getFeeds({
                 chainName={blockchain as chainNameType}
                 // optional parameters for rendering spambox
                 isSpam
-                subscribeFn={async () => console.log("yayy spam")}
-                isSubscribedFn={async () => false}
-    
+                subscribeFn={subscribeFn} // see below
+                isSubscribedFn={isSubscribedFn} // see below
             />
         );
     })}
 ```
+
+
+```typescript
+const subscribeFn = async () => {
+  // opt in to the spam notification item channel
+}
+```
+we can use this `@epnsproject/sdk-restapi` method to do that - [subscribe](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/restapi/README.md#opt-in-to-a-channel)
+
+
+```typescript
+const isSubscribedFn = async () => {
+  // return boolean which says whether the channel for the 
+  // spam notification item is subscribed or not by the user.
+}
+```
+we can use this `@epnsproject/sdk-restapi` method to find out that - [getSubscriptions](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/restapi/README.md#fetching-user-subscriptions)
+
+
 
 #### Parsing raw [Feeds API data](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-user-notifications) using [utils](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#parsing-notifications) method `parseApiResponse`
 Utils method to parse raw EPNS Feeds API response into a pre-defined shape as below.
 ```typescript
 // fetch some raw feeds data
 const apiResponse = await EpnsAPI.user.getFeeds({
-  user: '0xabc123', // user address
-  chainId: 1, // ETH network chain ID
-  raw: true
+  user: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // user address
+  raw: true,
+  env: 'staging'
 });
 // parse it to get a specific shape of object.
 const parsedResults = EpnsAPI.utils.parseApiResponse(apiResponse);
@@ -236,76 +254,69 @@ import * as EpnsAPI from '@epnsproject/sdk-restapi';
 #### [Fetch Channel Data](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channel-details)
 
 ```typescript
-const response = await EpnsAPI.channels.getChannel({
-    channel: channelAddr,
-    chainId
+const subscribers = await EpnsAPI.channels.getChannel({
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // channel address in CAIP
+  env: 'staging'
 });
 ```
 
-*Note on `channelAlias`: If you are running the dApp on any network other than ETH_Mainnet, ETH_Kovan like Polygon, then you need to provide a `channelAlias` if that channel has a registered alias address on the same network (i.e. Polygon etc). The response from `getChannel` has a field called `alias_address` which has the value for the `channelAlias` if registered.*
-
-#### [DEPRECATED-Fetch Channel Subscribers](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-channels-subscribers-details)
+#### [DEPRECATED-Fetch Channel Subscribers](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#deprecated)
 
 ```typescript
-const response = await EpnsAPI.channels._getSubscribers({
-    channel: channelAddr,
-    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
-    chainId
+const subscribers = await EpnsAPI.channels._getSubscribers({
+  channel: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // channel address in CAIP
+  env: 'staging'
 });
 ```
 
-#### [Fetch User subscriptions](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#check-if-user-is-subscribed-to-a-channel)
+#### [Fetch User subscriptions](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#fetching-user-subscriptions)
 
 ```typescript
 const subscriptions = await EpnsAPI.user.getSubscriptions({
-  user: account, // user address
-  chainId // ETH network chain ID
+  user: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // user address in CAIP
+  env: 'staging'
 });
 ```
 
 #### [Opt-In to a channel](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#opt-in-to-a-channel) 
 
 ```typescript
- const _signer = library.getSigner(account); // from useWeb3()
+const _signer = library.getSigner(account); // from useWeb3()
  //
  //
  //
 await EpnsAPI.channels.subscribe({
-    signer: _signer,
-    channelAddress: channelAddr,
-    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
-    userAddress: account,
-    chainId,
-    onSuccess: () => {
-    console.log('opt in success');
-        setSubscriberStatus(true);
-    },
-    onError: (e) => {
-        console.error('opt in error', e);
-    },
+  signer: _signer,
+  channelAddress: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // channel address in CAIP
+  userAddress: 'eip155:42:0x52f856A160733A860ae7DC98DC71061bE33A28b3', // user address in CAIP
+  onSuccess: () => {
+   console.log('opt in success');
+  },
+  onError: () => {
+    console.error('opt in error');
+  },
+  env: 'staging'
 })
 ```
 
 #### [Opt-Out of a channel](https://github.com/ethereum-push-notification-service/epns-sdk/blob/main/packages/restapi/README.md#opt-out-to-a-channel) 
 
 ```typescript
- const _signer = library.getSigner(account); // from useWeb3()
+const _signer = library.getSigner(account); // from useWeb3()
  //
  //
  //
-  await EpnsAPI.channels.unsubscribe({
-    signer: _signer,
-    channelAddress: channelAddr,
-    channelAlias: [80001, 37].includes(chainId) ? (channelData && channelData['alias_address']) : channelAddr,
-    userAddress: account,
-    chainId,
-    onSuccess: () => {
-    console.log('opt out success');
-        setSubscriberStatus(false);
-    },
-    onError: (e) => {
-        console.error('opt out error', e);
-    },
+await EpnsAPI.channels.unsubscribe({
+  signer: _signer,
+  channelAddress: 'eip155:42:0xD8634C39BBFd4033c0d3289C4515275102423681', // channel address in CAIP
+  userAddress: 'eip155:42:0x52f856A160733A860ae7DC98DC71061bE33A28b3', // user address in CAIP
+  onSuccess: () => {
+   console.log('opt out success');
+  },
+  onError: () => {
+    console.error('opt out error');
+  },
+  env: 'staging'
 })
 ```
 

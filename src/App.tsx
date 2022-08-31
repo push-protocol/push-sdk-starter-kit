@@ -2,10 +2,11 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useWeb3React } from "@web3-react/core";
-import Web3Context, { DevContext } from './context/web3Context';
+import Web3Context, { EnvContext } from './context/web3Context';
 import Logo from './assets/epnsLogo.png';
 import ConnectButton from './components/connect';
-import Checkbox from './components/checkbox';
+import { Checkbox } from './components/checkbox';
+import Dropdown from './components/dropdown';
 import NotificationsPage from './pages/notifications';
 import ChannelsPage from './pages/channels';
 import EmbedPage from './pages/embed';
@@ -98,9 +99,15 @@ const checkForWeb3Data = ({ library, active, account, chainId  } : Web3ReactStat
 export function App() {
   const web3Data : Web3ReactState = useWeb3React();
 
-  const [isDevENV, setIsDevENV] = useState(false);
-  const onChange = () => {
-    setIsDevENV(!isDevENV);
+  const [env, setEnv] = useState('prod');
+  const [isCAIP, setIsCAIP] = useState(false);
+
+  const onChangeEnv = (e: any) => {
+    setEnv(e.target.value);
+  };
+
+  const onChangeCAIP = () => {
+    setIsCAIP(!isCAIP);
   };
 
   return (
@@ -112,10 +119,23 @@ export function App() {
 
       <ConnectButton />
 
-      <Checkbox id="devEnv" value={isDevENV} onChange={onChange} label="DEV ENV"/>
+      <Dropdown
+        label="ENV"
+        options={[
+          { label: 'prod', value: 'prod' },
+          { label: 'staging', value: 'staging' },
+          { label: 'dev', value: 'dev' }
+        ]}
+        value={env}
+        onChange={onChangeEnv}
+      />
+
+      <div style={{ marginTop: 10 }}>
+        <Checkbox id="isCAIP" label="Convert to CAIP" value={isCAIP} onChange={onChangeCAIP} />
+      </div>
 
       <hr />
-      <DevContext.Provider value={{ isDevENV }}>
+      <EnvContext.Provider value={{ env, isCAIP }}>
       {checkForWeb3Data(web3Data) ? (
         <Web3Context.Provider value={web3Data}>
           <Routes>
@@ -147,7 +167,7 @@ export function App() {
           </Routes>
         </Web3Context.Provider>
       ) : null}
-      </DevContext.Provider>
+      </EnvContext.Provider>
     </StyledApp>
   );
 }

@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { Section, SectionItem, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader'
 import { DarkIcon, LightIcon } from '../../components/icons';
-import Web3Context, { DevContext } from '../../context/web3Context';
+import Web3Context, { EnvContext } from '../../context/web3Context';
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
 import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/sdk-uiweb';
-
+import { getCAIPAddress } from '../../helpers';
 
 const NotificationListContainer = styled.div`
   margin: 20px;
@@ -40,7 +40,7 @@ const ThemeSelector = styled.div`
 
 const NotificationsTest = () => {
   const { account, chainId } = useContext<any>(Web3Context);
-  const { isDevENV } = useContext<any>(DevContext);
+  const { env, isCAIP } = useContext<any>(EnvContext);
   const [isLoading, setLoading] = useState(false);
   const [notifs, setNotifs] = useState<EpnsAPI.ParsedResponseType[]>();
   const [spams, setSpams] = useState<EpnsAPI.ParsedResponseType[]>();
@@ -49,33 +49,34 @@ const NotificationsTest = () => {
   const [showSubscribe, setShowSubscribe] = useState(false);
 
 
-  console.log({ isDevENV });
-
   const loadNotifications = useCallback(async () => {
     try {
       setLoading(true);
       const feeds = await EpnsAPI.user.getFeeds({
-        user: account,
-        // user: '0xD8634C39BBFd4033c0d3289C4515275102423681',
-        chainId,
-        dev: isDevENV
+        user: isCAIP ? getCAIPAddress(env, account) : account,
+        // user: isCAIP ? getCAIPAddress(env, devWorkingAddress) : devWorkingAddress,
+        limit: 30,
+        env: env
       });
+
+      console.log('feeds: ', feeds);
+
       setNotifs(feeds);
+
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  }, [account, chainId, isDevENV]);
+  }, [account, env, isCAIP]);
 
   const loadSpam = useCallback(async () => {
     try {
       setLoading(true);
       const spams = await EpnsAPI.user.getFeeds({
-        user: account,
-        chainId,
+        user: isCAIP ? getCAIPAddress(env, account) : account,
         spam: true,
-        dev: isDevENV
+        env: env
       });
 
       setSpams(spams);
@@ -85,7 +86,7 @@ const NotificationsTest = () => {
     } finally {
       setLoading(false);
     }
-  }, [account, chainId, isDevENV]);
+  }, [account, env, isCAIP]);
 
   const toggleTheme = () => {
     setTheme(lastTheme => {
@@ -112,20 +113,19 @@ const NotificationsTest = () => {
       <div>
         <Header>
           <h2>Notifications Test page</h2>
+
+          {/* <TestModal /> */}
           
           <ThemeSelector>
             {theme === 'dark' ? <DarkIcon title="Dark" onClick={toggleTheme}/> : <LightIcon title="Light" onClick={toggleTheme}/>}
           </ThemeSelector>
         </Header>
-
-        
-  
+                
         <TabButtons>
           <SectionButton onClick={() => { setViewType('notif') }}>Notifications</SectionButton>
           <SectionButton onClick={() => { setViewType('spam') }}>Spam</SectionButton>
           <SectionButton onClick={toggleSubscribedModal}>show subscribed modal</SectionButton>
         </TabButtons>
-  
 
         <Loader show={isLoading} />
 
@@ -134,7 +134,7 @@ const NotificationsTest = () => {
         <Section theme={theme}>
           {viewType === 'notif' ? (
             <>
-            <b className='headerText'>Notifications</b>
+            <b className='headerText'>Notifications: </b>
             <SectionItem>
               {notifs ? (
                 <NotificationListContainer>
@@ -178,7 +178,7 @@ const NotificationsTest = () => {
 
           ) : (
             <>
-              <b className='headerText'>Spams</b>
+              <b className='headerText'>Spams: </b>
               <SectionItem>
               {spams ? (
                 <NotificationListContainer>

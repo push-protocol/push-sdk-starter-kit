@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Checkbox = (props: { id: string, label: string, value?: boolean, onChange: () => void }) => {
+export const Checkbox = (props: { id: string, label: string, value?: boolean, onChange: () => void }) => {
     return (
       <div>
         <input 
@@ -12,6 +12,4 @@ const Checkbox = (props: { id: string, label: string, value?: boolean, onChange:
         <label htmlFor={props.id}>{props.label}</label>
       </div>
     );
-  };
-
-  export default Checkbox;
+};
