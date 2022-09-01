@@ -6,18 +6,20 @@ type DropdownOptionsType = {
 };
 
 const Dropdown = ({
+    style,
     label,
     value,
     options,
     onChange
 }: {
+    style?: any
     label: string,
     value?: string,
     options: DropdownOptionsType[],
     onChange: (arg0: any) => void 
 }) => {
     return (
-      <label style={{ display: 'flex', gap: 8 }}>
+      <label style={{ display: 'flex', gap: 8, ...style }}>
         {label}
         <select value={value} onChange={onChange}>
           {options.map((option) => (
