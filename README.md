@@ -144,7 +144,6 @@ const spams = await EpnsAPI.user.getFeeds({
 #### [Displaying Spams](https://github.com/ethereum-push-notification-service/epns-sdk/tree/main/packages/uiweb#notification-item-component)
 
 ```typescript
-// spams === parsedResults
 {spams ? (
     <NotificationListContainer>
         {spams.map((oneNotification, i) => {

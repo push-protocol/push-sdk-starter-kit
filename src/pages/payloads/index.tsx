@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import styled from 'styled-components';
-import { Section, SectionItem, SectionButton } from '../../components/styled';
+import { Section, SectionItem, SectionButton, CodeFormatter } from '../../components/styled';
 import Loader from '../../components/loader'
 import { DarkIcon, LightIcon } from '../../components/icons';
 import { APIFeedback } from '../../components/feedback';
@@ -46,7 +46,7 @@ const getOptionsMatrix = (
 ) => {
   if (!signer) throw Error(`No Signer provided`);
 
-  // console.log('isCAIP: ===> ', isCAIP);
+  const channelAddr = isCAIP ? getCAIPAddress(env, channel) : channel;
 
   return {
     TARGETTED: {
@@ -66,7 +66,7 @@ const getOptionsMatrix = (
               img: ''
           },
           recipients: isCAIP ? getCAIPAddress(env, '0xD8634C39BBFd4033c0d3289C4515275102423681') : '0xD8634C39BBFd4033c0d3289C4515275102423681',
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       IPFS: {
           signer,
@@ -85,7 +85,7 @@ const getOptionsMatrix = (
               img: ''
           },
           recipients: isCAIP ? getCAIPAddress(env, '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1') : '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1',
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       MINIMAL: {
           signer,
@@ -103,7 +103,7 @@ const getOptionsMatrix = (
               img: ''
           },
           recipients: isCAIP ? getCAIPAddress(env, '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1') : '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1',
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       GRAPH: {
           signer,
@@ -125,7 +125,7 @@ const getOptionsMatrix = (
               img: ''
           },
           recipients: isCAIP ? getCAIPAddress(env, '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1') : '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1',
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       }
     },
     SUBSET: {
@@ -147,7 +147,7 @@ const getOptionsMatrix = (
           recipients: isCAIP ? 
             ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
             : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       IPFS: {
           signer,
@@ -168,7 +168,7 @@ const getOptionsMatrix = (
           recipients: isCAIP ? 
             ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
             : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       MINIMAL: {
           signer,
@@ -188,7 +188,7 @@ const getOptionsMatrix = (
           recipients: isCAIP ? 
             ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
             : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       GRAPH: {
           signer,
@@ -212,7 +212,7 @@ const getOptionsMatrix = (
           recipients: isCAIP ? 
             ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
             : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       }
     },
     BROADCAST: {
@@ -231,7 +231,7 @@ const getOptionsMatrix = (
               cta: '',
               img: ''
           },
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       IPFS: {
           signer,
@@ -249,7 +249,7 @@ const getOptionsMatrix = (
               cta: '',
               img: ''
           },
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       MINIMAL: {
           signer,
@@ -266,7 +266,7 @@ const getOptionsMatrix = (
               cta: '',
               img: ''
           },
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       },
       GRAPH: {
           signer,
@@ -287,7 +287,7 @@ const getOptionsMatrix = (
               cta: '',
               img: ''
           },
-          channel: isCAIP ? getCAIPAddress(env, channel) : channel,
+          channel: channelAddr,
       }
     },
   };
@@ -303,7 +303,6 @@ const PayloadsPage = () => {
     const [apiStatus, setApiStatus] = useState<any>();
     const [inputOption, setInputOption] = useState<any>();
     const [OPTIONS_MATRIX, SET_OPTIONS_MATRIX] = useState<any>({});
-    const [timestamp, setTimestamp] = useState<string>(JSON.stringify(Date.now()));
     
     // const PK = 'd5797b255933f72a6a084fcfc0f5f4881defee8c1ae387197805647d0b10a8a0'; // PKey, server code
     // const Pkey = `0x${PK}`;
@@ -351,7 +350,6 @@ const PayloadsPage = () => {
   
   
     const selectInputOption = (_option: any) => {
-      setTimestamp(JSON.stringify(Date.now()));
       setInputOption(_option);
     };
   
@@ -562,6 +560,22 @@ const PayloadsPage = () => {
         </>
       );
     };
+
+    const renderInputOption = () => {
+      if (inputOption) {
+        const { signer, ...renderInputOption} = inputOption;
+
+        return (
+          <div>
+          <CodeFormatter>  
+            {JSON.stringify(renderInputOption, null, 4)}
+          </CodeFormatter>
+        </div>
+        );
+      }
+
+      return null;
+    }
   
     useEffect(() => {
       const options = getOptionsMatrix({
@@ -569,18 +583,13 @@ const PayloadsPage = () => {
         channel: testChannelAddress,
         env,
         isCAIP,
-        timestamp
+        timestamp: JSON.stringify(Date.now())
       });
   
       SET_OPTIONS_MATRIX(options);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [env, isCAIP, timestamp]);
-  
-    // console.log('LOG: --> ', { env, isCAIP });
-  
-    useEffect(() => {
-      localStorage.setItem('_dump_', JSON.stringify([]));
-    }, []);
+    }, [env, isCAIP, viewType, inputOption]);
+
   
     return (
         <div>
@@ -606,12 +615,15 @@ const PayloadsPage = () => {
           <Section theme={theme}>
             <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', marginBottom: 16 }}>
               <p style={{ color: '#b57f38' }}>Please choose one of the options below and hit "send notification" button</p>
-              <p style={{ color: '#b57f38' }}>{timestamp}</p>
+
               <SectionButton style={{ width: 400 }} onClick={() => triggerNotification()}>send notification</SectionButton>
               {apiStatus ? <APIFeedback status={apiStatus?.status === 204 ? 'success' : 'error'}>{JSON.stringify(apiStatus)}</APIFeedback> : null}
             </div>
   
             {renderSections()}
+
+            {renderInputOption()}
+           
           </Section>
   
   
