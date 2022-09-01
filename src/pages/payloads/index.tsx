@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Section, SectionItem, SectionButton, CodeFormatter } from '../../components/styled';
 import Loader from '../../components/loader'
@@ -47,6 +47,9 @@ const getOptionsMatrix = (
   if (!signer) throw Error(`No Signer provided`);
 
   const channelAddr = isCAIP ? getCAIPAddress(env, channel) : channel;
+
+
+  // EDIT here to change recipients, title, body etc
 
   return {
     TARGETTED: {
@@ -301,8 +304,7 @@ const PayloadsPage = () => {
     const [theme, setTheme] = useState('dark');
     const [viewType, setViewType] = useState(IDENTITY_TYPE.DIRECT_PAYLOAD);
     const [apiStatus, setApiStatus] = useState<any>();
-    const [inputOption, setInputOption] = useState<any>();
-    const [OPTIONS_MATRIX, SET_OPTIONS_MATRIX] = useState<any>({});
+    const [inputOption, setInputOption] = useState<any>([NOTIFICATION_TYPE.TARGETTED, IDENTITY_TYPE.DIRECT_PAYLOAD]);
     
     // const PK = 'd5797b255933f72a6a084fcfc0f5f4881defee8c1ae387197805647d0b10a8a0'; // PKey, server code
     // const Pkey = `0x${PK}`;
@@ -315,6 +317,14 @@ const PayloadsPage = () => {
   
     // for UI code
     const signer = library.getSigner(account);
+
+    const OPTIONS_MATRIX = getOptionsMatrix({
+      signer,
+      channel: testChannelAddress,
+      env,
+      isCAIP,
+      timestamp: JSON.stringify(Date.now())
+    });
   
   
     const toggleTheme = () => {
@@ -352,6 +362,20 @@ const PayloadsPage = () => {
     const selectInputOption = (_option: any) => {
       setInputOption(_option);
     };
+
+    const renderInputOption = (optionsObject: any) => {
+      if (optionsObject) {
+        const { signer, ...renderInputOption} = optionsObject;
+
+        return (
+          <CodeFormatter>  
+            {JSON.stringify({ ...renderInputOption, signer: {} }, null, 4)}
+          </CodeFormatter>
+        );
+      }
+
+      return null;
+    }
   
     const renderSections = () => {
       if (viewType === IDENTITY_TYPE.MINIMAL) {
@@ -359,9 +383,7 @@ const PayloadsPage = () => {
           <>
             <b className='headerText'>MINIMAL: </b>
             <SectionItem>
-              {/* <CodeFormatter>  
-                {JSON.stringify(OPTIONS_MATRIX.TARGETTED.MINIMAL, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.TARGETTED.MINIMAL)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -374,9 +396,7 @@ const PayloadsPage = () => {
             </SectionItem>
     
             <SectionItem>
-              {/* <CodeFormatter>
-                {JSON.stringify(OPTIONS_MATRIX.SUBSET.MINIMAL, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.SUBSET.MINIMAL)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -389,9 +409,7 @@ const PayloadsPage = () => {
             </SectionItem>
     
             <SectionItem>
-              {/* <CodeFormatter>
-                {JSON.stringify(OPTIONS_MATRIX.BROADCAST.MINIMAL, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.BROADCAST.MINIMAL)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -411,9 +429,7 @@ const PayloadsPage = () => {
           <>
             <b className='headerText'>IPFS: </b>
             <SectionItem>
-              {/* <CodeFormatter>  
-                {JSON.stringify(OPTIONS_MATRIX.TARGETTED.IPFS, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.TARGETTED.IPFS)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -426,9 +442,7 @@ const PayloadsPage = () => {
             </SectionItem>
     
             <SectionItem>
-              {/* <CodeFormatter>
-                {JSON.stringify(OPTIONS_MATRIX.SUBSET.IPFS, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.SUBSET.IPFS)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -441,9 +455,7 @@ const PayloadsPage = () => {
             </SectionItem>
     
             <SectionItem>
-              {/* <CodeFormatter>
-                {JSON.stringify(OPTIONS_MATRIX.BROADCAST.IPFS, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.BROADCAST.IPFS)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -463,9 +475,7 @@ const PayloadsPage = () => {
           <>
             <b className='headerText'>GRAPH: (make sure the account connected has the associated graph ID)</b>
             <SectionItem>
-              {/* <CodeFormatter>  
-                {JSON.stringify(OPTIONS_MATRIX.TARGETTED.GRAPH, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.TARGETTED.GRAPH)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -478,9 +488,7 @@ const PayloadsPage = () => {
             </SectionItem>
     
             <SectionItem>
-              {/* <CodeFormatter>
-                {JSON.stringify(OPTIONS_MATRIX.SUBSET.GRAPH, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.SUBSET.GRAPH)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -493,9 +501,7 @@ const PayloadsPage = () => {
             </SectionItem>
     
             <SectionItem>
-              {/* <CodeFormatter>
-                {JSON.stringify(OPTIONS_MATRIX.BROADCAST.GRAPH, null, 4)}
-              </CodeFormatter> */}
+              {renderInputOption(OPTIONS_MATRIX.BROADCAST.GRAPH)}
               <label className='consoleLabel'>
                 <input
                   type="radio"
@@ -514,9 +520,7 @@ const PayloadsPage = () => {
         <>
           <b className='headerText'>DIRECT_PAYLOAD: </b>
           <SectionItem>
-            {/* <CodeFormatter>  
-              {JSON.stringify(OPTIONS_MATRIX.TARGETTED.DIRECT_PAYLOAD, null, 4)}
-            </CodeFormatter> */}
+            {renderInputOption(OPTIONS_MATRIX.TARGETTED.DIRECT_PAYLOAD)}
             <label className='consoleLabel'>
               <input
                 type="radio"
@@ -529,9 +533,7 @@ const PayloadsPage = () => {
           </SectionItem>
   
           <SectionItem>
-            {/* <CodeFormatter>
-              {JSON.stringify(OPTIONS_MATRIX.SUBSET.DIRECT_PAYLOAD, null, 4)}
-            </CodeFormatter> */}
+            {renderInputOption(OPTIONS_MATRIX.SUBSET.DIRECT_PAYLOAD)}
             <label className='consoleLabel'>
               <input
                 type="radio"
@@ -544,9 +546,7 @@ const PayloadsPage = () => {
           </SectionItem>
   
           <SectionItem>
-            {/* <CodeFormatter>
-              {JSON.stringify(OPTIONS_MATRIX.BROADCAST.DIRECT_PAYLOAD, null, 4)}
-            </CodeFormatter> */}
+            {renderInputOption(OPTIONS_MATRIX.BROADCAST.DIRECT_PAYLOAD)}
             <label className='consoleLabel'>
               <input
                 type="radio"
@@ -560,36 +560,6 @@ const PayloadsPage = () => {
         </>
       );
     };
-
-    const renderInputOption = () => {
-      if (inputOption) {
-        const { signer, ...renderInputOption} = inputOption;
-
-        return (
-          <div>
-          <CodeFormatter>  
-            {JSON.stringify(renderInputOption, null, 4)}
-          </CodeFormatter>
-        </div>
-        );
-      }
-
-      return null;
-    }
-  
-    useEffect(() => {
-      const options = getOptionsMatrix({
-        signer,
-        channel: testChannelAddress,
-        env,
-        isCAIP,
-        timestamp: JSON.stringify(Date.now())
-      });
-  
-      SET_OPTIONS_MATRIX(options);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [env, isCAIP, viewType, inputOption]);
-
   
     return (
         <div>
@@ -620,10 +590,8 @@ const PayloadsPage = () => {
               {apiStatus ? <APIFeedback status={apiStatus?.status === 204 ? 'success' : 'error'}>{JSON.stringify(apiStatus)}</APIFeedback> : null}
             </div>
   
-            {renderSections()}
-
-            {renderInputOption()}
-           
+            {OPTIONS_MATRIX ? renderSections() : null}
+         
           </Section>
   
   
