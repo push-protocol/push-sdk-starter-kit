@@ -73,17 +73,7 @@ const getOptionsMatrix = (
           type: NOTIFICATION_TYPE.TARGETTED,
           identityType: IDENTITY_TYPE.IPFS,
           ipfsHash: 'bafkreicuttr5gpbyzyn6cyapxctlr7dk2g6fnydqxy6lps424mcjcn73we', // from BE devtools
-          notification: {
-              title: `[SDK-TEST] notification TITLE: ${timestamp}`,
-              body: `[sdk-test] notification BODY ${timestamp}`
-          },
-          payload: {
-              title: `[sdk-test] payload title ${timestamp}`,
-              body: `type:${NOTIFICATION_TYPE.TARGETTED} identity:${IDENTITY_TYPE.IPFS}`,
-              cta: '',
-              img: ''
-          },
-          recipients: isCAIP ? getCAIPAddress(env, '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1') : '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1',
+          recipients: isCAIP ? getCAIPAddress(env, '0xD8634C39BBFd4033c0d3289C4515275102423681') : '0xD8634C39BBFd4033c0d3289C4515275102423681',
           channel: channelAddr,
       },
       [IDENTITY_TYPE.MINIMAL]: {
@@ -101,7 +91,7 @@ const getOptionsMatrix = (
               cta: '',
               img: ''
           },
-          recipients: isCAIP ? getCAIPAddress(env, '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1') : '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1',
+          recipients: isCAIP ? getCAIPAddress(env, '0xD8634C39BBFd4033c0d3289C4515275102423681') : '0xD8634C39BBFd4033c0d3289C4515275102423681',
           channel: channelAddr,
       },
       [IDENTITY_TYPE.SUBGRAPH]: {
@@ -113,17 +103,7 @@ const getOptionsMatrix = (
             id: 'aiswaryawalter/graph-poc-sample',
             counter: 3
           },
-          notification: {
-              title: `[SDK-TEST] notification TITLE: ${timestamp}`,
-              body: `[sdk-test] notification BODY ${timestamp}`
-          },
-          payload: {
-              title: `[sdk-test] payload title ${timestamp}`,
-              body: `type:${NOTIFICATION_TYPE.TARGETTED} identity:${IDENTITY_TYPE.SUBGRAPH}`,
-              cta: '',
-              img: ''
-          },
-          recipients: isCAIP ? getCAIPAddress(env, '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1') : '0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1',
+          recipients: isCAIP ? getCAIPAddress(env, '0xD8634C39BBFd4033c0d3289C4515275102423681') : '0xD8634C39BBFd4033c0d3289C4515275102423681',
           channel: channelAddr,
       }
     },
@@ -144,8 +124,8 @@ const getOptionsMatrix = (
               img: ''
           },
           recipients: isCAIP ? 
-            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
-            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
+            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'].map(addr => getCAIPAddress(env, addr))
+            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'],
           channel: channelAddr,
       },
       [IDENTITY_TYPE.IPFS]: {
@@ -154,19 +134,9 @@ const getOptionsMatrix = (
           type: NOTIFICATION_TYPE.SUBSET,
           identityType: IDENTITY_TYPE.IPFS,
           ipfsHash: 'bafkreicuttr5gpbyzyn6cyapxctlr7dk2g6fnydqxy6lps424mcjcn73we', // from BE devtools
-          notification: {
-              title: `[SDK-TEST] notification TITLE: ${timestamp}`,
-              body: `[sdk-test] notification BODY ${timestamp}`
-          },
-          payload: {
-              title: `[sdk-test] payload title ${timestamp}`,
-              body: `type:${NOTIFICATION_TYPE.SUBSET} identity:${IDENTITY_TYPE.IPFS}`,
-              cta: '',
-              img: ''
-          },
           recipients: isCAIP ? 
-            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
-            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
+            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'].map(addr => getCAIPAddress(env, addr))
+            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'],
           channel: channelAddr,
       },
       [IDENTITY_TYPE.MINIMAL]: {
@@ -185,8 +155,8 @@ const getOptionsMatrix = (
               img: ''
           },
           recipients: isCAIP ? 
-            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
-            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
+            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'].map(addr => getCAIPAddress(env, addr))
+            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'],
           channel: channelAddr,
       },
       [IDENTITY_TYPE.SUBGRAPH]: {
@@ -198,19 +168,9 @@ const getOptionsMatrix = (
             id: 'aiswaryawalter/graph-poc-sample',
             counter: 3
           },
-          notification: {
-              title: `[SDK-TEST] notification TITLE: ${timestamp}`,
-              body: `[sdk-test] notification BODY ${timestamp}`
-          },
-          payload: {
-              title: `[sdk-test] payload title ${timestamp}`,
-              body: `type:${NOTIFICATION_TYPE.SUBSET} identity:${IDENTITY_TYPE.SUBGRAPH}`,
-              cta: '',
-              img: ''
-          },
           recipients: isCAIP ? 
-            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'].map(addr => getCAIPAddress(env, addr))
-            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0x52f856A160733A860ae7DC98DC71061bE33A28b3'],
+            ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'].map(addr => getCAIPAddress(env, addr))
+            : ['0xCdBE6D076e05c5875D90fa35cc85694E1EAFBBd1', '0xD8634C39BBFd4033c0d3289C4515275102423681'],
           channel: channelAddr,
       }
     },
@@ -238,16 +198,6 @@ const getOptionsMatrix = (
           type: NOTIFICATION_TYPE.BROADCAST,
           identityType: IDENTITY_TYPE.IPFS,
           ipfsHash: 'bafkreicuttr5gpbyzyn6cyapxctlr7dk2g6fnydqxy6lps424mcjcn73we', // from BE devtools
-          notification: {
-              title: `[SDK-TEST] notification TITLE: ${timestamp}`,
-              body: `[sdk-test] notification BODY ${timestamp}`
-          },
-          payload: {
-              title: `[sdk-test] payload title ${timestamp}`,
-              body: `type:${NOTIFICATION_TYPE.BROADCAST} identity:${IDENTITY_TYPE.IPFS}`,
-              cta: '',
-              img: ''
-          },
           channel: channelAddr,
       },
       [IDENTITY_TYPE.MINIMAL]: {
@@ -275,16 +225,6 @@ const getOptionsMatrix = (
           graph: {
             id: 'aiswaryawalter/graph-poc-sample',
             counter: 3
-          },
-          notification: {
-              title: `[SDK-TEST] notification TITLE: ${timestamp}`,
-              body: `[sdk-test] notification BODY ${timestamp}`
-          },
-          payload: {
-              title: `[sdk-test] payload title ${timestamp}`,
-              body: `type:${NOTIFICATION_TYPE.BROADCAST} identity:${IDENTITY_TYPE.SUBGRAPH}`,
-              cta: '',
-              img: ''
           },
           channel: channelAddr,
       }
