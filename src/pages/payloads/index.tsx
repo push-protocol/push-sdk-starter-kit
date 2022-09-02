@@ -368,7 +368,7 @@ const PayloadsPage = () => {
         console.log('sdkInput: ', sdkInput);
 
         const apiResponse = await EpnsAPI.payloads.sendNotification(sdkInput);
-        // console.log('apiResponse: ', apiResponse);
+        console.log('apiResponse: ', apiResponse);
         setApiStatus({
           status: apiResponse?.status,
           data: apiResponse?.config?.data
@@ -420,7 +420,8 @@ const PayloadsPage = () => {
 
               <div style={{ display: 'flex', gap: 20 }}>
                 <Dropdown
-                  style={{ color: 'green', width: 400 }}
+                  style={{ color: 'green' }}
+                  width={200}
                   label="NOTIFICATION TYPE"
                   options={NOTIFICATION_TYPE_OPTIONS}
                   value={notificationTypeOption}
@@ -428,7 +429,8 @@ const PayloadsPage = () => {
                 />
 
                 <Dropdown
-                  style={{ color: 'green', width: 400 }}
+                  style={{ color: 'green' }}
+                  width={200}
                   label="IDENTITY TYPE"
                   options={IDENTITY_TYPE_OPTIONS}
                   value={identityTypeOption}
