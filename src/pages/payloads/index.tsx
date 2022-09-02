@@ -36,10 +36,17 @@ const IDENTITY_TYPE = {
   SUBGRAPH: 3
 };
 
+type optionsMatrixType = {
+  [key: string]: {
+    [key: string]: any
+  }
+};
+
+
 const getOptionsMatrix = (
   { signer, env = 'prod', isCAIP, channel, timestamp } :
   { signer: any, env?: string, isCAIP?: boolean, channel: string, timestamp: string }
-) => {
+) : optionsMatrixType => {
   if (!signer) throw Error(`No Signer provided`);
 
   const channelAddr = isCAIP ? getCAIPAddress(env, channel) : channel;
@@ -301,8 +308,6 @@ const PayloadsPage = () => {
       setApiStatus('');
       setLoading(true);
       try {
-
-        // @ts-ignore
         const sdkInput = OPTIONS_MATRIX[notificationTypeOption][identityTypeOption];
 
         console.log('sdkInput: ', sdkInput);
@@ -323,7 +328,6 @@ const PayloadsPage = () => {
   
 
     const renderInputOption = () => {
-      // @ts-ignore
       let optionsObject = OPTIONS_MATRIX[notificationTypeOption.toString()][identityTypeOption.toString()];
 
       if (optionsObject) {
