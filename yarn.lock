@@ -1191,10 +1191,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
-"@epnsproject/sdk-restapi@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-restapi/-/sdk-restapi-0.1.11.tgz#737117e5f1314aeb4e6f6a9a8257d19349437d79"
-  integrity sha512-MUGHJCy1BDMvF0mjWheUTQTOa4G5waAoCpDdtTUiXJZNFM00KIvsh8R0oETzRrIxPC+MjxDQ715JB1vA6Lxb1A==
+"@epnsproject/sdk-restapi@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-restapi/-/sdk-restapi-0.1.12.tgz#edc6ede6affc7339612aaaa3e33d072c601114a2"
+  integrity sha512-9U3x1g7gfi4CScDt/kJCypt49khcxESqa624cBrQRV9VxiWCRnG556MaG3ZZDnxBB7ueh2NOmMTgD46m4TshMQ==
   dependencies:
     axios "^0.27.2"
     tslib "^2.3.0"
