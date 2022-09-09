@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Section, SectionItem, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader'
 import { DarkIcon, LightIcon } from '../../components/icons';
-import Web3Context, { EnvContext } from '../../context/web3Context';
+import { Web3Context, EnvContext } from '../../context';
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
 import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/sdk-uiweb';
 import { getCAIPAddress } from '../../helpers';

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@epnsproject/sdk-restapi": "^0.1.13",
+    "@epnsproject/sdk-socket": "^0.1.0",
     "@epnsproject/sdk-uiembed": "^0.0.3",
     "@epnsproject/sdk-uiweb": "^0.1.10",
     "@testing-library/jest-dom": "^5.14.1",

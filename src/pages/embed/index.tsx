@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 import { EmbedSDK } from "@epnsproject/sdk-uiembed";
-import Web3Context from '../../context/web3Context';
+import { Web3Context } from '../../context';
 
 const EmbedPage = () => {
     const { account, chainId } = useContext<any>(Web3Context);

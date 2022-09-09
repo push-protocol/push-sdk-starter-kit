@@ -2,15 +2,17 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useWeb3React } from "@web3-react/core";
-import Web3Context, { EnvContext } from './context/web3Context';
+import { Web3Context, EnvContext, SocketContext } from './context';
 import Logo from './assets/epnsLogo.png';
 import ConnectButton from './components/connect';
 import { Checkbox } from './components/checkbox';
 import Dropdown from './components/dropdown';
+import { useSDKSocket } from './hooks';
 import NotificationsPage from './pages/notifications';
 import ChannelsPage from './pages/channels';
 import EmbedPage from './pages/embed';
 import PayloadsPage from './pages/payloads';
+import SocketPage from './pages/sockets';
 
 interface Web3ReactState {
   chainId?: number;
@@ -103,6 +105,13 @@ export function App() {
   const [env, setEnv] = useState('prod');
   const [isCAIP, setIsCAIP] = useState(false);
 
+  const socketData = useSDKSocket({
+    account: web3Data.account,
+    chainId: web3Data.chainId,
+    env,
+    isCAIP,
+  })
+
   const onChangeEnv = (e: any) => {
     setEnv(e.target.value);
   };
@@ -139,39 +148,48 @@ export function App() {
       <EnvContext.Provider value={{ env, isCAIP }}>
       {checkForWeb3Data(web3Data) ? (
         <Web3Context.Provider value={web3Data}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <NavMenu>
-                  <Link to="/notifications" className='nav-button'>NOTIFICATIONS</Link>
-                  <Link to="/channels" className='nav-button'>CHANNELS</Link>
-                  <Link to="/payloads" className='nav-button'>PAYLOADS</Link>
-                  <Link to="/embed" className='nav-button'>EMBDED</Link>
-                </NavMenu>
-              }
-            />
-            <Route
-              path="/notifications"
-              element={<NotificationsPage />}
-            />
+          <SocketContext.Provider value={socketData}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <NavMenu>
+                    <Link to="/notifications" className='nav-button'>NOTIFICATIONS</Link>
+                    <Link to="/channels" className='nav-button'>CHANNELS</Link>
+                    <Link to="/payloads" className='nav-button'>PAYLOADS</Link>
+                    <Link to="/socket" className='nav-button'>SOCKET</Link>
+                    <Link to="/embed" className='nav-button'>EMBDED</Link>
+                  </NavMenu>
+                }
+              />
+              <Route
+                path="/notifications"
+                element={<NotificationsPage />}
+              />
+            
           
-        
-            <Route
-              path="/channels"
-              element={<ChannelsPage />}
-            />
+              <Route
+                path="/channels"
+                element={<ChannelsPage />}
+              />
 
-            <Route
-              path="/payloads"
-              element={<PayloadsPage />}
-            />
+              <Route
+                path="/payloads"
+                element={<PayloadsPage />}
+              />
 
-            <Route
-              path="/embed"
-              element={<EmbedPage />}
-            />
-          </Routes>
+
+              <Route
+                path="/socket"
+                element={<SocketPage />}
+              />
+
+              <Route
+                path="/embed"
+                element={<EmbedPage />}
+              />
+            </Routes>
+          </SocketContext.Provider>
         </Web3Context.Provider>
       ) : null}
       </EnvContext.Provider>

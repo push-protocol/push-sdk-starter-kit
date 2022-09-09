@@ -5,7 +5,7 @@ import Loader from '../../components/loader'
 import Dropdown from '../../components/dropdown';
 import { DarkIcon, LightIcon } from '../../components/icons';
 import { APIFeedback } from '../../components/feedback';
-import Web3Context, { EnvContext } from '../../context/web3Context';
+import { Web3Context, EnvContext } from '../../context';
 import * as EpnsAPI from '@epnsproject/sdk-restapi';
 import { getCAIPAddress } from '../../helpers';
 
