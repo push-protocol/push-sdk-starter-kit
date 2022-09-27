@@ -1,8 +1,8 @@
-# EPNS-SDK starter kit
+# PUSH-SDK starter kit
 
-This starter-kit is meant to showcase developers on how to use the EPNS SDK packages - 
+This starter-kit is meant to showcase developers on how to use the PUSH SDK packages - 
 
-* [@epnsproject/sdk-restapi](https://www.npmjs.com/package/@epnsproject/sdk-restapi) Provides access to EPNS backend APIs.
+* [@epnsproject/sdk-restapi](https://www.npmjs.com/package/@epnsproject/sdk-restapi) Provides access to PUSH backend APIs.
 * [@epnsproject/sdk-uiweb](https://www.npmjs.com/package/@epnsproject/sdk-uiweb) Provides React based components to show Notifications, Spam, SubscribedModal etc for dApps.
 * [@epnsproject/sdk-uiembed](https://www.npmjs.com/package/@epnsproject/sdk-uiembed) Provides vanilla JS sidebar notifications for any  dApp.
 
@@ -44,7 +44,7 @@ yarn add styled-components
 yarn add @web3-react/core @web3-react/injected-connector
 ```
 
-**But no need to install these if you are using the `starter-kit` itself since we have already installed these for you so that you can focus on how to use the EPNS-SDK packages**
+**But no need to install these if you are using the `starter-kit` itself since we have already installed these for you so that you can focus on how to use the PUSH-SDK packages**
 
 ## App walkthrough
 
@@ -55,7 +55,7 @@ The App has following features-
 | Notifications    | notifications, <br/>spams, <br/>subscribed modal  |  @epnsproject/sdk-uiweb, <br/>@epnsproject/sdk-restapi    |
 | Channels     | get channel details for a specific channel, <br/>search for channel(s), <br/>get channel subscribers, <br/>is the logged-in user subscribed to the channel, <br/>opt in a channel, <br/>opt out a channel  | @epnsproject/sdk-restapi      |
 | Payloads     | send notification for different use cases  | @epnsproject/sdk-restapi      |
-| Embed | sidebar notifications for the logged in user if subscribed on EPNS  |   @epnsproject/sdk-uiembed    |
+| Embed | sidebar notifications for the logged in user if subscribed on PUSH protocol  |   @epnsproject/sdk-uiembed    |
 
 **We have extracted some snippets from the actual source code of the `starter-kit` files mentioned below to give you a snapshot view of what all SDK features are used in this dApp. But to make sure you are following along correctly please refer to the source code itself in the files mentioned.**
 
