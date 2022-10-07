@@ -1191,38 +1191,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
-"@epnsproject/sdk-restapi@^0.1.13":
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-restapi/-/sdk-restapi-0.1.13.tgz#c97ad111d6e89a484726678b8b9a83e45caeafd5"
-  integrity sha512-S5fn5/xOM1f0/5PFeQJ4QGU7TYtzeOVAcgBruC73h060t8nVlz5Nv9z3HhFgnj5TB/KnhvXhJZTL59g7gvpeyw==
-  dependencies:
-    axios "^0.27.2"
-    tslib "^2.3.0"
-    uuid "^8.3.2"
-
-"@epnsproject/sdk-socket@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-socket/-/sdk-socket-0.1.0.tgz#a901807f379535228d7ae9c687935d997e4a5074"
-  integrity sha512-RbKocFzIAIGHnu7k4UTHQoL9M2n0PdITmZ0FZiEDSbC+aSgDXQ1RMR6QPW2UYNxFBfVqdCKIlnTRw0AdZYwqgg==
-  dependencies:
-    socket.io-client "^4.5.2"
-    tslib "^2.3.0"
-
-"@epnsproject/sdk-uiembed@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-uiembed/-/sdk-uiembed-0.0.3.tgz#e42db9b080409a52565dcdae979424a7bcea93ff"
-  integrity sha512-lMOQk+sbjuDphgExB4NQo7vr0MwZtWjrXiUuL1tbmT8b0B2tyGCNW0oR/hJKs0wCwckBxHnNvWpkISvwNNITyQ==
-  dependencies:
-    tslib "^2.3.0"
-
-"@epnsproject/sdk-uiweb@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@epnsproject/sdk-uiweb/-/sdk-uiweb-0.1.10.tgz#96468839938605aac5b1cbec0fc367d31364669e"
-  integrity sha512-hbhwsOJ/0G+aZFuUDWZYothh2nulsWIJZmCub0/DHn2HtzDgc9fuuVYH7WgDwxSfOBfJRRz/640DzDEQQu0AUA==
-  dependencies:
-    date-fns "^2.28.0"
-    html-react-parser "^1.4.13"
-
 "@eslint/eslintrc@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.3.0.tgz#29f92c30bb3e771e4a2048c95fa6855392dfac4f"
@@ -1907,6 +1875,38 @@
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
     source-map "^0.7.3"
+
+"@pushprotocol/restapi@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@pushprotocol/restapi/-/restapi-0.0.4.tgz#e4b9d76fcbd39f2b626f0f2d9c1acbd06ca82ef9"
+  integrity sha512-nt/EQW4L4f8Tb8wMNpVcas5DTLe6mrUKQTGatdd8ZZHS/Zh56uNN1VZqUCDPsrDLs6s699OMytufXLOv3TPG9g==
+  dependencies:
+    axios "^0.27.2"
+    tslib "^2.3.0"
+    uuid "^9.0.0"
+
+"@pushprotocol/socket@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@pushprotocol/socket/-/socket-0.0.1.tgz#306e020fa6cd8694270ba0f7641d5779738e5ba8"
+  integrity sha512-r+H4ExiEtShpGHNFjfu7YpgqOaG1STvxJThNURHxXLKblYHW6dMl/JndN/BuFXIxRP+6krOWur+g8sp2FHbWQg==
+  dependencies:
+    socket.io-client "^4.5.2"
+    tslib "^2.3.0"
+
+"@pushprotocol/uiembed@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@pushprotocol/uiembed/-/uiembed-0.0.1.tgz#6ab0b3d21c671fe0b5806eae91f86adf166e6022"
+  integrity sha512-orcHjw77gpt5fEaMlNuc+wDIH2GGLWZl3TGPlfX9BwX9l/5TXKwtmriEYgNQb9y193zqN5nuObWRLDYZnHTSgg==
+  dependencies:
+    tslib "^2.3.0"
+
+"@pushprotocol/uiweb@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@pushprotocol/uiweb/-/uiweb-0.0.1.tgz#26f6aad8ba7ebcf64d9e9e1eed4054d244473da9"
+  integrity sha512-yut9bo7GBnMWg4Zek0AwwYTDlE7guAx/HhGuHoNoQZvKEuct6mTQaNyNjjIVKNPw5Jliu5dt9/ObVxT8Q0mMCA==
+  dependencies:
+    date-fns "^2.28.0"
+    html-react-parser "^1.4.13"
 
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
@@ -3953,9 +3953,9 @@ data-urls@^2.0.0:
     whatwg-url "^8.0.0"
 
 date-fns@^2.28.0:
-  version "2.28.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
-  integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 debug@2.6.9, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -4939,10 +4939,15 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.6.tgz#022e9218c637f9f3fc9c35ab9c9193f05add60b2"
   integrity sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==
 
-follow-redirects@^1.0.0, follow-redirects@^1.14.9:
+follow-redirects@^1.0.0:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.1.tgz#0ca6a452306c9b276e4d3127483e29575e207ad5"
   integrity sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==
+
+follow-redirects@^1.14.9:
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
+  integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
 
 fork-ts-checker-webpack-plugin@^6.5.0:
   version "6.5.2"
@@ -9231,6 +9236,11 @@ uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 v8-compile-cache@^2.0.3:
   version "2.3.0"

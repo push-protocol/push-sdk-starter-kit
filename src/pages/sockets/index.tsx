@@ -45,7 +45,7 @@ const SocketTest = () => {
     const [theme, setTheme] = useState('dark');
     
     const {
-      epnsSDKSocket,
+      pushSDKSocket,
       feedsSinceLastConnection,
       isSDKSocketConnected,
       lastConnectionTimestamp
@@ -58,10 +58,10 @@ const SocketTest = () => {
     };
   
     const toggleSocketConnection = () => {
-      if (!epnsSDKSocket?.connected) {
-        epnsSDKSocket?.connect();
+      if (!pushSDKSocket?.connected) {
+        pushSDKSocket?.connect();
       } else {
-        epnsSDKSocket?.disconnect();
+        pushSDKSocket?.disconnect();
       }
     };  
   

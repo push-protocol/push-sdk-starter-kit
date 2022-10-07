@@ -6,7 +6,7 @@ import Dropdown from '../../components/dropdown';
 import { DarkIcon, LightIcon } from '../../components/icons';
 import { APIFeedback } from '../../components/feedback';
 import { Web3Context, EnvContext } from '../../context';
-import * as EpnsAPI from '@epnsproject/sdk-restapi';
+import * as PushAPI from '@pushprotocol/restapi';
 import { getCAIPAddress } from '../../helpers';
 
 
@@ -312,7 +312,7 @@ const PayloadsPage = () => {
 
         console.log('sdkInput: ', sdkInput);
 
-        const apiResponse = await EpnsAPI.payloads.sendNotification(sdkInput);
+        const apiResponse = await PushAPI.payloads.sendNotification(sdkInput);
         console.log('apiResponse: ', apiResponse);
         setApiStatus({
           status: apiResponse?.status,

@@ -1,5 +1,5 @@
 import { useEffect, useContext } from 'react';
-import { EmbedSDK } from "@epnsproject/sdk-uiembed";
+import { EmbedSDK } from "@pushprotocol/uiembed";
 import { Web3Context } from '../../context';
 
 const EmbedPage = () => {

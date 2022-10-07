@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useWeb3React } from "@web3-react/core";
 import { Web3Context, EnvContext, SocketContext } from './context';
-import Logo from './assets/epnsLogo.png';
+import { ReactComponent as PushLogo }  from './assets/pushLogo.svg';
 import ConnectButton from './components/connect';
 import { Checkbox } from './components/checkbox';
 import Dropdown from './components/dropdown';
@@ -13,6 +13,8 @@ import ChannelsPage from './pages/channels';
 import EmbedPage from './pages/embed';
 import PayloadsPage from './pages/payloads';
 import SocketPage from './pages/sockets';
+
+
 
 interface Web3ReactState {
   chainId?: number;
@@ -123,8 +125,8 @@ export function App() {
   return (
     <StyledApp>
       <Link to="/" className='homeLink'>
-        <LogoImg src={Logo} />
-        <h1>EPNS-SDK Starter Kit App</h1>
+        <PushLogo style={{ marginRight: 12 }}/>
+        <h1>SDK Starter Kit App</h1>
       </Link>
 
       <ConnectButton />

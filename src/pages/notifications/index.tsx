@@ -4,8 +4,8 @@ import { Section, SectionItem, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader'
 import { DarkIcon, LightIcon } from '../../components/icons';
 import { Web3Context, EnvContext } from '../../context';
-import * as EpnsAPI from '@epnsproject/sdk-restapi';
-import { NotificationItem, chainNameType, SubscribedModal } from '@epnsproject/sdk-uiweb';
+import * as PushAPI from '@pushprotocol/restapi';
+import { NotificationItem, chainNameType, SubscribedModal } from '@pushprotocol/uiweb';
 import { getCAIPAddress } from '../../helpers';
 
 const NotificationListContainer = styled.div`
@@ -42,8 +42,8 @@ const NotificationsTest = () => {
   const { account, chainId } = useContext<any>(Web3Context);
   const { env, isCAIP } = useContext<any>(EnvContext);
   const [isLoading, setLoading] = useState(false);
-  const [notifs, setNotifs] = useState<EpnsAPI.ParsedResponseType[]>();
-  const [spams, setSpams] = useState<EpnsAPI.ParsedResponseType[]>();
+  const [notifs, setNotifs] = useState<PushAPI.ParsedResponseType[]>();
+  const [spams, setSpams] = useState<PushAPI.ParsedResponseType[]>();
   const [theme, setTheme] = useState('dark');
   const [viewType, setViewType] = useState('notif');
   const [showSubscribe, setShowSubscribe] = useState(false);
@@ -52,7 +52,7 @@ const NotificationsTest = () => {
   const loadNotifications = useCallback(async () => {
     try {
       setLoading(true);
-      const feeds = await EpnsAPI.user.getFeeds({
+      const feeds = await PushAPI.user.getFeeds({
         user: isCAIP ? getCAIPAddress(env, account) : account,
         // user: isCAIP ? getCAIPAddress(env, devWorkingAddress) : devWorkingAddress,
         limit: 30,
@@ -73,7 +73,7 @@ const NotificationsTest = () => {
   const loadSpam = useCallback(async () => {
     try {
       setLoading(true);
-      const spams = await EpnsAPI.user.getFeeds({
+      const spams = await PushAPI.user.getFeeds({
         user: isCAIP ? getCAIPAddress(env, account) : account,
         spam: true,
         env: env

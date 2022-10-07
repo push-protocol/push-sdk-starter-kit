@@ -1,6 +1,6 @@
 {
-  "short_name": "EPNS SDK Starter Kit App",
-  "name": "EPNS SDK Starter Kit App",
+  "short_name": "Push SDK Starter Kit App",
+  "name": "Push SDK Starter Kit App",
   "icons": [
     {
       "src": "favicon.ico",

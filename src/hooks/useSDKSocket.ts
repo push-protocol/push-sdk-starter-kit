@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   createSocketConnection,
   EVENTS
-} from '@epnsproject/sdk-socket';
+} from '@pushprotocol/socket';
 
 // import { getCAIPAddress } from '../helpers';
 
@@ -15,20 +15,20 @@ export type SDKSocketHookOptions = {
 
 export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHookOptions) => {
   
-  const [epnsSDKSocket, setEpnsSDKSocket] = useState<any>(null);
+  const [pushSDKSocket, setPushSDKSocket] = useState<any>(null);
   const [feedsSinceLastConnection, setFeedsSinceLastConnection] = useState<any>([]);
-  const [isSDKSocketConnected, setIsSDKSocketConnected] = useState(epnsSDKSocket?.connected);
+  const [isSDKSocketConnected, setIsSDKSocketConnected] = useState(pushSDKSocket?.connected);
   const [lastConnectionTimestamp, setLastConnectionTimestamp] = useState('');
 
   const addSocketEvents = () => {
     // console.warn('\n--> addSocketEvents');
-    epnsSDKSocket?.on(EVENTS.CONNECT, () => {
+    pushSDKSocket?.on(EVENTS.CONNECT, () => {
       // console.log('CONNECTED: ');
       setIsSDKSocketConnected(true);
       setLastConnectionTimestamp((new Date()).toUTCString());
     });
 
-    epnsSDKSocket?.on(EVENTS.DISCONNECT, () => {
+    pushSDKSocket?.on(EVENTS.DISCONNECT, () => {
       // console.log('DIS-CONNECTED: ');
       setIsSDKSocketConnected(false);
       setFeedsSinceLastConnection([]);
@@ -36,7 +36,7 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
     });
 
     // console.log('\t-->will attach eachFeed event now');
-    epnsSDKSocket?.on(EVENTS.USER_FEEDS, (feedList: any) => {
+    pushSDKSocket?.on(EVENTS.USER_FEEDS, (feedList: any) => {
       /**
        * We receive a feed list which has 1 item.
        */
@@ -51,23 +51,23 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
 
   const removeSocketEvents = () => {
     // console.warn('\n--> removeSocketEvents');
-    epnsSDKSocket?.off(EVENTS.CONNECT);
-    epnsSDKSocket?.off(EVENTS.DISCONNECT);
-    epnsSDKSocket?.off(EVENTS.USER_FEEDS);
+    pushSDKSocket?.off(EVENTS.CONNECT);
+    pushSDKSocket?.off(EVENTS.DISCONNECT);
+    pushSDKSocket?.off(EVENTS.USER_FEEDS);
   };
 
   useEffect(() => {
-    if (epnsSDKSocket) {
+    if (pushSDKSocket) {
       addSocketEvents();
     }
   
     return () => {
-      if (epnsSDKSocket) {
+      if (pushSDKSocket) {
         removeSocketEvents();
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [epnsSDKSocket]);
+  }, [pushSDKSocket]);
 
 
   /**
@@ -77,9 +77,9 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
    */
   useEffect(() => {
     if (account) {
-      if (epnsSDKSocket) {
+      if (pushSDKSocket) {
         // console.log('=================>>> disconnection in the hook');
-        epnsSDKSocket?.disconnect();
+        pushSDKSocket?.disconnect();
       }
       
       const connectionObject = createSocketConnection({
@@ -89,14 +89,14 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
       });
       // console.warn('new connection object: ', connectionObject);
       // set to context
-      setEpnsSDKSocket(connectionObject);
+      setPushSDKSocket(connectionObject);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, env, chainId, isCAIP]);
 
 
   return {
-      epnsSDKSocket,
+      pushSDKSocket,
       isSDKSocketConnected,
       feedsSinceLastConnection,
       lastConnectionTimestamp

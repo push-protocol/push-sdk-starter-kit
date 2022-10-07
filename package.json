@@ -1,12 +1,12 @@
 {
-  "name": "epns-sdk-starter-kit",
+  "name": "push-sdk-starter-kit",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@epnsproject/sdk-restapi": "^0.1.13",
-    "@epnsproject/sdk-socket": "^0.1.0",
-    "@epnsproject/sdk-uiembed": "^0.0.3",
-    "@epnsproject/sdk-uiweb": "^0.1.10",
+    "@pushprotocol/restapi": "^0.0.4",
+    "@pushprotocol/socket": "^0.0.1",
+    "@pushprotocol/uiembed": "^0.0.1",
+    "@pushprotocol/uiweb": "^0.0.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",

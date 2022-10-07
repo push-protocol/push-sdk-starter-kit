@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Section, SectionItem, CodeFormatter, SectionButton } from '../../components/styled';
 import Loader from '../../components/loader';
 import { Web3Context, EnvContext } from '../../context';
-import * as EpnsAPI from '@epnsproject/sdk-restapi';
+import * as PushAPI from '@pushprotocol/restapi';
 import { getCAIPAddress } from '../../helpers';
 
 const ChannelsPage = () => {
@@ -34,7 +34,7 @@ const ChannelsPage = () => {
       setLoading(true);
 
       // object for channel data
-      const response = await EpnsAPI.channels.getChannel({
+      const response = await PushAPI.channels.getChannel({
         channel: isCAIP ? getCAIPAddress(env, channelAddr) : channelAddr,
         env
       });
@@ -52,7 +52,7 @@ const ChannelsPage = () => {
       setLoading(true);
 
       // Array for channels data
-      const response = await EpnsAPI.channels.search({
+      const response = await PushAPI.channels.search({
         query: channelName,
         env
       });
@@ -67,7 +67,7 @@ const ChannelsPage = () => {
   const testGetSubscribers = async () => {
     try {
       setLoading(true);
-      const response = await EpnsAPI.channels._getSubscribers({
+      const response = await PushAPI.channels._getSubscribers({
         channel: isCAIP ? getCAIPAddress(env, channelAddr) : channelAddr,
         env
       });
@@ -83,7 +83,7 @@ const ChannelsPage = () => {
   const testSubscriberStatus = async () => {
     try {
       setLoading(true);
-      let subscriptions = await EpnsAPI.user.getSubscriptions({
+      let subscriptions = await PushAPI.user.getSubscriptions({
         user: isCAIP ? getCAIPAddress(env, account) : account,
         env
       });
@@ -109,7 +109,7 @@ const ChannelsPage = () => {
       setLoading(true);
 
       if (subscriberStatus) {
-        await EpnsAPI.channels.unsubscribe({
+        await PushAPI.channels.unsubscribe({
           signer: _signer,
           channelAddress: isCAIP ? getCAIPAddress(env, channelAddr) : channelAddr,
           userAddress: isCAIP ? getCAIPAddress(env, account) : account,
@@ -123,7 +123,7 @@ const ChannelsPage = () => {
           },
         })
       } else {
-        await EpnsAPI.channels.subscribe({
+        await PushAPI.channels.subscribe({
           signer: _signer,
           channelAddress: isCAIP ? getCAIPAddress(env, channelAddr) : channelAddr,
           userAddress: isCAIP ? getCAIPAddress(env, account) : account,
