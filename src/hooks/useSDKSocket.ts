@@ -14,7 +14,7 @@ export type SDKSocketHookOptions = {
 };
 
 export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHookOptions) => {
-  
+
   const [pushSDKSocket, setPushSDKSocket] = useState<any>(null);
   const [feedsSinceLastConnection, setFeedsSinceLastConnection] = useState<any>([]);
   const [isSDKSocketConnected, setIsSDKSocketConnected] = useState(pushSDKSocket?.connected);
@@ -41,10 +41,11 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
        * We receive a feed list which has 1 item.
        */
       console.log("\n\n\n\neachFeed event: ", feedList);
-
+      // Convert feedList to an array if it's not an array
+      const feedArray = Array.isArray(feedList) ? feedList : [feedList];
       // do stuff with data
       setFeedsSinceLastConnection((oldFeeds: any) => {
-        return [...oldFeeds, ...feedList]
+        return [...oldFeeds, ...feedArray]
       });
     });
   };
@@ -60,19 +61,19 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
     if (pushSDKSocket) {
       addSocketEvents();
     }
-  
+
     return () => {
       if (pushSDKSocket) {
         removeSocketEvents();
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pushSDKSocket]);
 
 
   /**
    * Whenever the requisite params to create a connection object change
-   *  - disconnect the old connection 
+   *  - disconnect the old connection
    *  - create a new connection object
    */
   useEffect(() => {
@@ -81,7 +82,7 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
         // console.log('=================>>> disconnection in the hook');
         pushSDKSocket?.disconnect();
       }
-      
+
       const connectionObject = createSocketConnection({
         user: account,
         env,
@@ -91,14 +92,14 @@ export const useSDKSocket = ({ account, env = '', chainId, isCAIP }: SDKSocketHo
       // set to context
       setPushSDKSocket(connectionObject);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, env, chainId, isCAIP]);
 
 
   return {
-      pushSDKSocket,
-      isSDKSocketConnected,
-      feedsSinceLastConnection,
-      lastConnectionTimestamp
+    pushSDKSocket,
+    isSDKSocketConnected,
+    feedsSinceLastConnection,
+    lastConnectionTimestamp
   }
 };
